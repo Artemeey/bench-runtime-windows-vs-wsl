@@ -9,11 +9,6 @@ param (
 $root = & "$PSScriptRoot\fs-path.ps1" $Proxy
 $npmDir = Join-Path $root "npm-install"
 
-if (-not (Test-Path -LiteralPath (Join-Path $npmDir "package-lock.json"))) {
-	Write-Error "package-lock.json not found. Run setup-fs first."
-	exit 1
-}
-
 Remove-Item -LiteralPath (Join-Path $npmDir "node_modules") -Recurse -Force -ErrorAction SilentlyContinue
 
 if (-not $UseCache) {
@@ -26,7 +21,7 @@ $sysCpuStart = $process.PrivilegedProcessorTime
 
 $timer = [System.Diagnostics.Stopwatch]::StartNew()
 
-npm ci --prefix $npmDir | Out-Null
+npm install --prefix $npmDir | Out-Null
 
 $timer.Stop()
 $process.Refresh()
