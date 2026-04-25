@@ -21,8 +21,5 @@ for proxy in false true; do
 	mkdir -p "$npm_dir"
 	cp "$PACKAGE_JSON" "$npm_dir/package.json"
 
-	# Prepare lockfile outside the measured npm ci benchmark.
-	npm install --package-lock-only --prefix "$npm_dir" > /dev/null
-
 	echo "prepared: $root"
 done
