@@ -13,6 +13,24 @@ Benchmark suite for comparing Windows and WSL performance in real development sc
 - `native` — filesystem of the current environment
 - `proxy` — access across the Windows ↔ WSL boundary
 
+## Benchmark equivalence
+
+PowerShell and Bash scripts do not execute the same commands. They use different runtimes and system APIs.
+
+The benchmark compares equivalent operations:
+
+- `files-find`
+  - PowerShell: recursive enumeration via .NET APIs
+  - Bash: recursive enumeration via `find`
+- `files-create-delete`
+  - PowerShell: file operations via .NET APIs
+  - Bash: file operations via shell utilities
+- `npm-install`
+  - both variants execute `npm install`
+  - cache mode is controlled explicitly
+
+Results must be interpreted as runtime/environment benchmarks, not pure filesystem microbenchmarks.
+
 ## Environment setup
 
 PowerShell:
@@ -54,7 +72,7 @@ Compare results within the same environment:
 - WSL Bash native vs proxy
 - Git Bash native vs proxy
 
-Cross-environment comparison (PowerShell vs WSL vs Git Bash) reflects differences in runtime, shell and system layers in addition to filesystem behavior.
+Cross-environment comparison reflects differences in runtime, shell and system layers.
 
 ## Requirements
 
