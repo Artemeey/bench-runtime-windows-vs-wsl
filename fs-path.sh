@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-# Resolves benchmark root path for Bash-compatible environments.
-# false = native filesystem for the current runtime.
-# true = proxy filesystem across the Windows <-> WSL boundary.
+# Resolve benchmark root path.
+# false = native filesystem, true = proxy filesystem.
 
 windows_path_to_git_bash_path() {
 	local path="$1"
@@ -35,7 +34,7 @@ get_test_root() {
 	fi
 
 	if [ "$proxy" != "true" ] && [ "$proxy" != "false" ]; then
-		echo "Invalid mode: $proxy. Expected true or false." >&2
+		echo "Invalid mode: $proxy" >&2
 		exit 1
 	fi
 
