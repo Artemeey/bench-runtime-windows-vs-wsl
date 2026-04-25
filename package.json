@@ -1,0 +1,18 @@
+{
+	"private": true,
+	"dependencies": {
+		"@vitejs/plugin-vue": "latest",
+		"axios": "latest",
+		"lodash": "latest",
+		"pinia": "latest",
+		"typescript": "latest",
+		"vite": "latest",
+		"vue": "latest",
+		"vue-router": "latest"
+	},
+	"devDependencies": {
+		"eslint": "latest",
+		"prettier": "latest",
+		"sass": "latest"
+	}
+}
