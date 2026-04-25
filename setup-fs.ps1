@@ -1,5 +1,4 @@
 # Prepare benchmark folders for native and proxy modes.
-# This script does not delete existing benchmark results.
 
 $packageJson = Join-Path $PSScriptRoot "package.json"
 
@@ -14,9 +13,6 @@ foreach ($proxy in @($false, $true)) {
 
 	New-Item -ItemType Directory -Force -Path $npmDir | Out-Null
 	Copy-Item -LiteralPath $packageJson -Destination (Join-Path $npmDir "package.json") -Force
-
-	# Prepare lockfile outside the measured npm ci benchmark.
-	npm install --package-lock-only --prefix $npmDir | Out-Null
 
 	Write-Output ("prepared: {0}" -f $root)
 }
