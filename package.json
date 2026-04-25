@@ -1,5 +1,8 @@
 {
 	"private": true,
+	"scripts": {
+		"prepare-lock": "npm install --package-lock-only"
+	},
 	"dependencies": {
 		"@vitejs/plugin-vue": "latest",
 		"axios": "latest",
