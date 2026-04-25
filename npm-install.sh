@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# npm ci benchmark (reproducible)
+# npm install benchmark
 
 set -euo pipefail
 
@@ -18,11 +18,6 @@ source "$SCRIPT_DIR/fs-path.sh"
 ROOT="$(get_test_root "$PROXY")"
 NPM_DIR="$ROOT/npm-install"
 
-if [ ! -f "$NPM_DIR/package-lock.json" ]; then
-	echo "package-lock.json not found. Run setup-fs first." >&2
-	exit 1
-fi
-
 rm -rf "$NPM_DIR/node_modules"
 
 if [ "$USE_CACHE" = "false" ]; then
@@ -30,7 +25,7 @@ if [ "$USE_CACHE" = "false" ]; then
 fi
 
 TIMEFORMAT="%3R %3U %3S"
-TIME_RESULT="$({ time npm ci --prefix "$NPM_DIR" > /dev/null 2>/dev/null; } 2>&1)"
+TIME_RESULT="$({ time npm install --prefix "$NPM_DIR" > /dev/null 2>/dev/null; } 2>&1)"
 
 read -r REAL_TIME USER_CPU SYS_CPU <<< "$TIME_RESULT"
 
