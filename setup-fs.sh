@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # Prepare benchmark folders for native and proxy modes.
-# This script does not delete existing data.
 
 set -euo pipefail
 
@@ -15,13 +14,15 @@ if [ ! -f "$PACKAGE_JSON" ]; then
 	exit 1
 fi
 
-# Prepare both environments: native and proxy.
 for proxy in false true; do
 	root="$(get_test_root "$proxy")"
 	npm_dir="$root/npm-install"
 
 	mkdir -p "$npm_dir"
 	cp "$PACKAGE_JSON" "$npm_dir/package.json"
+
+	# Prepare lockfile outside the measured npm ci benchmark.
+	npm install --package-lock-only --prefix "$npm_dir" > /dev/null
 
 	echo "prepared: $root"
 done
