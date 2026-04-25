@@ -17,12 +17,16 @@ if (-not (Test-Path -LiteralPath $packageJson -PathType Leaf)) {
 	exit 1
 }
 
-# Recreate working dir for clean install
+# Ensure reproducible install
+if (-not (Test-Path -LiteralPath (Join-Path $PSScriptRoot "package-lock.json"))) {
+	npm install --package-lock-only | Out-Null
+}
+
 Remove-Item -LiteralPath $npmDir -Recurse -Force -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $npmDir | Out-Null
 Copy-Item -LiteralPath $packageJson -Destination (Join-Path $npmDir "package.json") -Force
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot "package-lock.json") -Destination (Join-Path $npmDir "package-lock.json") -Force
 
-# Control npm cache behavior
 if (-not $UseCache) {
 	npm cache clean --force | Out-Null
 }
@@ -33,11 +37,7 @@ $sysCpuStart = $process.PrivilegedProcessorTime
 
 $timer = [System.Diagnostics.Stopwatch]::StartNew()
 
-if ($UseCache) {
-	npm install --prefer-offline --prefix $npmDir | Out-Null
-} else {
-	npm install --prefer-online --prefix $npmDir | Out-Null
-}
+npm ci --prefix $npmDir | Out-Null
 
 $timer.Stop()
 $process.Refresh()
@@ -45,7 +45,6 @@ $process.Refresh()
 $userCpu = ($process.UserProcessorTime - $userCpuStart).TotalSeconds
 $sysCpu = ($process.PrivilegedProcessorTime - $sysCpuStart).TotalSeconds
 
-# Count installed files
 $count = 0
 $nodeModules = Join-Path $npmDir "node_modules"
 if ([System.IO.Directory]::Exists($nodeModules)) {
