@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# npm install benchmark (with/without cache)
+# npm install benchmark (reproducible via npm ci)
 
 set -euo pipefail
 
@@ -24,23 +24,22 @@ if [ ! -f "$PACKAGE_JSON" ]; then
 	exit 1
 fi
 
-# Recreate working dir
+# Ensure lockfile exists
+if [ ! -f "$SCRIPT_DIR/package-lock.json" ]; then
+	npm install --package-lock-only > /dev/null
+fi
+
 rm -rf "$NPM_DIR"
 mkdir -p "$NPM_DIR"
 cp "$PACKAGE_JSON" "$NPM_DIR/package.json"
+cp "$SCRIPT_DIR/package-lock.json" "$NPM_DIR/package-lock.json"
 
-# Control npm cache
 if [ "$USE_CACHE" = "false" ]; then
 	npm cache clean --force > /dev/null 2>&1
 fi
 
 TIMEFORMAT="%3R %3U %3S"
-
-if [ "$USE_CACHE" = "true" ]; then
-	TIME_RESULT="$({ time npm install --prefer-offline --prefix "$NPM_DIR" > /dev/null; } 2>&1)"
-else
-	TIME_RESULT="$({ time npm install --prefer-online --prefix "$NPM_DIR" > /dev/null; } 2>&1)"
-fi
+TIME_RESULT="$({ time npm ci --prefix "$NPM_DIR" > /dev/null; } 2>&1)"
 
 read -r REAL_TIME USER_CPU SYS_CPU <<< "$TIME_RESULT"
 
