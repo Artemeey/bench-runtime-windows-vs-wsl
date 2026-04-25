@@ -33,6 +33,7 @@ $process.Refresh()
 
 $userCpu = ($process.UserProcessorTime - $userCpuStart).TotalSeconds
 $sysCpu = ($process.PrivilegedProcessorTime - $sysCpuStart).TotalSeconds
+$culture = [System.Globalization.CultureInfo]::InvariantCulture
 
 $count = 0
 $nodeModules = Join-Path $npmDir "node_modules"
@@ -43,5 +44,5 @@ if ([System.IO.Directory]::Exists($nodeModules)) {
 }
 
 Write-Output ("files: {0}" -f $count)
-Write-Output ("time: {0:N3} sec" -f $timer.Elapsed.TotalSeconds)
-Write-Output ("cpu: {0:N3} user + {1:N3} sys sec" -f $userCpu, $sysCpu)
+Write-Output ("time: {0} sec" -f $timer.Elapsed.TotalSeconds.ToString("F3", $culture))
+Write-Output ("cpu: {0} user + {1} sys sec" -f $userCpu.ToString("F3", $culture), $sysCpu.ToString("F3", $culture))
