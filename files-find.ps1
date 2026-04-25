@@ -1,10 +1,8 @@
 param (
-	# true = proxy FS, false = native FS
 	[Parameter(Mandatory = $true)]
 	[bool]$Proxy
 )
 
-# Resolve path via shared env-based resolver
 $root = & "$PSScriptRoot\fs-path.ps1" $Proxy
 
 if (-not [System.IO.Directory]::Exists($root)) {
@@ -12,15 +10,12 @@ if (-not [System.IO.Directory]::Exists($root)) {
 	exit 1
 }
 
-# Capture CPU baseline
 $process = Get-Process -Id $PID
 $userCpuStart = $process.UserProcessorTime
 $sysCpuStart = $process.PrivilegedProcessorTime
 
-# Wall-clock timer
 $timer = [System.Diagnostics.Stopwatch]::StartNew()
 
-# Enumerate files using streaming API
 $count = 0
 foreach ($file in [System.IO.Directory]::EnumerateFiles($root, "*", [System.IO.SearchOption]::AllDirectories)) {
 	$count++
@@ -29,11 +24,10 @@ foreach ($file in [System.IO.Directory]::EnumerateFiles($root, "*", [System.IO.S
 $timer.Stop()
 $process.Refresh()
 
-# CPU deltas
 $userCpu = ($process.UserProcessorTime - $userCpuStart).TotalSeconds
 $sysCpu = ($process.PrivilegedProcessorTime - $sysCpuStart).TotalSeconds
+$culture = [System.Globalization.CultureInfo]::InvariantCulture
 
-# Unified output format
 Write-Output ("files: {0}" -f $count)
-Write-Output ("time: {0:N3} sec" -f $timer.Elapsed.TotalSeconds)
-Write-Output ("cpu: {0:N3} user + {1:N3} sys sec" -f $userCpu, $sysCpu)
+Write-Output ("time: {0} sec" -f $timer.Elapsed.TotalSeconds.ToString("F3", $culture))
+Write-Output ("cpu: {0} user + {1} sys sec" -f $userCpu.ToString("F3", $culture), $sysCpu.ToString("F3", $culture))
