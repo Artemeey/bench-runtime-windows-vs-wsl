@@ -33,7 +33,7 @@ run_test() {
 	shift 3
 
 	local output
-	output="$($@)"
+	output="$("$@")"
 
 	local parsed
 	parsed="$(parse_result "$output")"
