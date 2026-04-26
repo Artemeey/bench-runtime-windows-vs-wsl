@@ -72,26 +72,6 @@ sudo chmod +x *.sh bash/*.sh # setup execute permissions once
 ./run.sh
 ```
 
-### Run a single test
-
-PowerShell:
-
-```powershell
-.\powershell\setup-fs.ps1 # before first run
-
-.\powershell\npm-install.ps1 $false $true # npm-install example
-```
-
-Bash:
-
-```bash
-sudo chmod +x *.sh bash/*.sh # setup execute permissions once
-
-bash/setup-fs.sh # before first run
-
-bash/npm-install.sh false true # npm-install example
-```
-
 ## Reading results
 
 ### Within the same environment

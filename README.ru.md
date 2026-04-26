@@ -74,26 +74,6 @@ sudo chmod +x *.sh bash/*.sh # настроить доступ один раз
 ./run.sh
 ```
 
-### Запуск одного теста
-
-PowerShell:
-
-```powershell
-.\powershell\setup-fs.ps1 # перед первым запуском
-
-.\powershell\npm-install.ps1 $false $true # пример запуска теста npm-install
-```
-
-Bash:
-
-```bash
-sudo chmod +x *.sh bash/*.sh # настроить доступ один раз
-
-bash/setup-fs.sh # перед первым запуском
-
-bash/npm-install.sh false true # пример запуска теста npm-install
-```
-
 ## Как читать результаты
 
 ### Внутри одного окружения
