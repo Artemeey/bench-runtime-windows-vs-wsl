@@ -8,6 +8,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$SCRIPT_DIR"
 BASH_TESTS_DIR="$SCRIPT_DIR/bash"
 RESULTS_DIR="$PROJECT_ROOT/results"
+source "$BASH_TESTS_DIR/.utils.sh"
+
 mkdir -p "$RESULTS_DIR"
 CSV="$RESULTS_DIR/results.csv"
 RESULTS_TXT="$RESULTS_DIR/results.txt"
@@ -62,7 +64,7 @@ run_test() {
 }
 
 # Подготавливаем тестовые директории перед запуском всех бенчмарков.
-[ -f "$PROJECT_ROOT/.env" ] && set -a && . "$PROJECT_ROOT/.env" && set +a
+load_project_env
 
 # Сохраняем версии инструментов и параметры запуска в текстовый отчёт.
 wsl_version_raw="$(wsl --version 2>/dev/null | tr -d '\000' | sed -E 's/[^[:print:]]//g' | head -n 1 || true)"

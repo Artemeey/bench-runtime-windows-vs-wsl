@@ -3,24 +3,19 @@
 # Создаём и удаляем 10 000 файлов.
 
 set -euo pipefail
-export LC_NUMERIC=C
 
 if [ "$#" -ne 1 ]; then
-	echo "Usage: $0 <true|false>"
+	echo "Usage: $0 <proxy: true|false>"
 	exit 1
 fi
 
 PROXY="$1"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "$SCRIPT_DIR/fs-path.sh"
+source "$SCRIPT_DIR/.utils.sh"
 
-ROOT="$(get_test_root "$PROXY")"
-
-if [ ! -d "$ROOT" ]; then
-	echo "Path not found: $ROOT" >&2
-	exit 1
-fi
+ROOT="$(get_root_path "$PROXY")"
+confirm_directory_exists "$ROOT"
 
 FILE_COUNT=10000
 TEST_DIR="$ROOT/files-create-delete-$(date +%s%N)"
@@ -38,7 +33,4 @@ TIME_RESULT="$({ time {
 
 read -r REAL_TIME USER_CPU SYS_CPU <<< "$TIME_RESULT"
 
-echo "files: $FILE_COUNT"
-echo "time: $REAL_TIME sec"
-echo "cpu_user: $USER_CPU sec"
-echo "cpu_sys: $SYS_CPU sec"
+write_test_result "$FILE_COUNT" "$REAL_TIME" "$USER_CPU" "$SYS_CPU"

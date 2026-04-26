@@ -43,7 +43,6 @@ chmod +x run.sh bash/*.sh
 Bash:
 
 ```bash
-set -a && source .env && set +a
 bash/npm-install.sh false true
 ```
 

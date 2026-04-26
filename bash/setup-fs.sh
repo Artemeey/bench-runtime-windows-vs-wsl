@@ -7,11 +7,12 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-source "$SCRIPT_DIR/fs-path.sh"
+source "$SCRIPT_DIR/.utils.sh"
 
 for proxy in false true; do
 	# Разворачиваем структуру теста в нативной и прокси файловых системах.
-	root="$(get_test_root "$proxy")"
+	root="$(get_root_path "$proxy")"
+	confirm_directory_exists "$root"
 	npm_dir="$root/npm-install"
 
 	# Кладём одинаковые package.json и package-lock.json в обе директории, чтобы условия npm-теста совпадали.

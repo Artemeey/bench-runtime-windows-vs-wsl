@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
 
-# Определяем корневой путь тестов для режима native/proxy.
-# false = нативная файловая система, true = доступ через границу Windows ↔ WSL.
+# Загружаем переменные окружения из `.env`.
+load_project_env() {
+	local script_dir
+	script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+	set -a
+	. "$script_dir/../.env"
+	set +a
+}
+
+# Фиксируем числовую локаль, чтобы десятичный разделитель всегда был `.`.
+set_numeric_locale() {
+	export LC_NUMERIC=C
+}
 
 # Конвертируем путь Windows (C:\foo\bar) в формат Git Bash (/c/foo/bar).
 windows_path_to_git_bash_path() {
@@ -29,8 +41,9 @@ windows_path_to_wsl_path() {
 }
 
 # Определяем корневой путь тестов для заданного режима и текущего runtime.
-get_test_root() {
+get_root_path() {
 	local proxy="$1"
+	load_project_env
 
 	# Проверяем обязательные переменные окружения для обоих направлений теста.
 	if [ -z "${TESTS_FS_WINDOWS:-}" ] || [ -z "${TESTS_FS_WSL:-}" ] || [ -z "${WSL_DISTRO:-}" ]; then
@@ -63,4 +76,28 @@ get_test_root() {
 			printf '%s\n' "$TESTS_FS_WSL"
 		fi
 	fi
+}
+
+# Проверяем, что директория существует перед запуском теста.
+confirm_directory_exists() {
+	local path="$1"
+
+	if [ ! -d "$path" ]; then
+		echo "Path not found: $path" >&2
+		exit 1
+	fi
+}
+
+# Печатаем результат теста в формате для run.sh.
+write_test_result() {
+	local files="$1"
+	local real_time="$2"
+	local user_cpu="$3"
+	local sys_cpu="$4"
+	set_numeric_locale
+
+	echo "files: $files"
+	echo "time: $real_time sec"
+	echo "cpu_user: $user_cpu sec"
+	echo "cpu_sys: $sys_cpu sec"
 }
