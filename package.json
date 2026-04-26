@@ -1,18 +1,12 @@
 {
 	"private": true,
 	"dependencies": {
-		"@vitejs/plugin-vue": "latest",
-		"axios": "latest",
-		"lodash": "latest",
-		"pinia": "latest",
-		"typescript": "latest",
-		"vite": "latest",
-		"vue": "latest",
-		"vue-router": "latest"
+		"axios": "1.9.0",
+		"lodash": "4.17.21",
+		"uuid": "9.0.1",
+		"vite": "7.1.11"
 	},
 	"devDependencies": {
-		"eslint": "latest",
-		"prettier": "latest",
-		"sass": "latest"
+		"prettier": "3.5.3"
 	}
 }
