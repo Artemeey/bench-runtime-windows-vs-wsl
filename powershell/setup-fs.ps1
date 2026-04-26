@@ -13,11 +13,12 @@ foreach ($proxy in @($false, $true)) {
 	$root = Get-RootPath -Proxy $proxy
 	Confirm-DirectoryExists -Path $root
 	$npmDir = Join-Path $root "npm-install"
+	$modeName = if ($proxy) { "proxy" } else { "native" }
 
 	# Кладём одинаковый package.json в обе директории, чтобы условия npm-теста совпадали.
 	New-Item -ItemType Directory -Force -Path $npmDir | Out-Null
 	Copy-Item -LiteralPath $packageJson -Destination (Join-Path $npmDir "package.json") -Force
 	Copy-Item -LiteralPath $packageLockJson -Destination (Join-Path $npmDir "package-lock.json") -Force
 
-	Write-Output ("prepared: {0}" -f $root)
+	Write-Output ("selected dir (${modeName}): {0}" -f $root)
 }

@@ -15,6 +15,10 @@ for proxy in false true; do
 	root="$(get_root_path "$proxy")"
 	confirm_directory_exists "$root"
 	npm_dir="$root/npm-install"
+	mode_name="native"
+	if [ "$proxy" = "true" ]; then
+		mode_name="proxy"
+	fi
 
 	# Кладём одинаковые package.json и package-lock.json в обе директории, чтобы условия npm-теста совпадали.
 	if [ "${MSYSTEM:-}" != "" ] && [ "$proxy" = "true" ]; then
@@ -27,5 +31,5 @@ for proxy in false true; do
 	cp "$PROJECT_ROOT/package.json" "$npm_dir/package.json"
 	cp "$PROJECT_ROOT/package-lock.json" "$npm_dir/package-lock.json"
 
-	echo "prepared: $root"
+	echo "selected dir ($mode_name): $root"
 done
