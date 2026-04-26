@@ -6,14 +6,12 @@
 
 - `files-find` — рекурсивный обход файлов
 - `files-create-delete` — создание и удаление 10 000 маленьких файлов
-- `npm-install` — установка npm-зависимостей с кешем и без кеша
+- `npm-install` — установка npm-зависимостей из `package-lock.json` с кешем и без кеша
 
 ## Корректность тестов
 
 - Наборы тестов Bash и PowerShell используют максимально эквивалентные операции для своих runtime и системных API.
-- Git Bash можно запускать и в Windows, и в WSL. Для чистого сравнения нужно два отдельных прогона:
-  - Git Bash (Windows)
-  - Git Bash (WSL)
+- В Windows используется MSYS2 Bash, в WSL используется нативный WSL Bash.
 
 ## Режимы
 
@@ -22,60 +20,64 @@
 
 ## Подготовка окружения
 
-PowerShell:
+Значения по умолчанию лежат в `.env`.
 
-```powershell
-$env:TESTS_FS_WINDOWS="C:\Windows\Temp\tests-fs"
-$env:TESTS_FS_WSL="/tmp/tests-fs"
-$env:WSL_DISTRO="Ubuntu"
-```
-
-Bash / Git Bash:
-
-```bash
-export TESTS_FS_WINDOWS="C:\Windows\Temp\tests-fs"
-export TESTS_FS_WSL="/tmp/tests-fs"
-export WSL_DISTRO="Ubuntu"
-```
+- `run.sh` и `run.ps1` сами подхватывают `.env`.
+- Для запуска одного Bash-скрипта передайте переменные из `.env` прямо в команду.
+- Для запуска одного PowerShell-скрипта используйте `.\env.ps1`.
 
 ## Запуск
 
 PowerShell:
 
 ```powershell
-.\powershell\run.ps1
+.\run.ps1
 ```
 
-Bash / Git Bash:
+Bash:
 
 ```bash
-chmod +x bash/*.sh
-./bash/run.sh
+chmod +x run.sh bash/*.sh
+./run.sh
+```
+
+### Запуск одного теста
+
+Bash:
+
+```bash
+set -a && source .env && set +a
+bash/npm-install.sh false true
+```
+
+PowerShell:
+
+```powershell
+.\env.ps1 .\powershell\npm-install.ps1 $false $true
 ```
 
 ## Как читать результаты
 
 ### Внутри одного окружения
 
-| Сравнение                                                 | Что показывает                                                                       |
-|-----------------------------------------------------------|--------------------------------------------------------------------------------------|
-| PowerShell `native` vs PowerShell `proxy`                 | Производительность PowerShell при доступе к файлам WSL через границу Windows ↔ WSL   |
-| WSL Bash `native` vs WSL Bash `proxy`                     | Производительность WSL Bash при доступе к файлам Windows через границу Windows ↔ WSL |
-| Git Bash (Windows) `native` vs Git Bash (Windows) `proxy` | Производительность Git Bash (Windows) при доступе к файлам WSL                       |
-| Git Bash (WSL) `native` vs Git Bash (WSL) `proxy`         | Производительность Git Bash (WSL) при доступе к файлам Windows                       |
+| Сравнение                                                     | Что показывает                                                                       |
+|---------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| PowerShell `native` vs PowerShell `proxy`                     | Производительность PowerShell при доступе к файлам WSL через границу Windows ↔ WSL   |
+| WSL Bash `native` vs WSL Bash `proxy`                         | Производительность WSL Bash при доступе к файлам Windows через границу Windows ↔ WSL |
+| MSYS2 Bash (Windows) `native` vs MSYS2 Bash (Windows) `proxy` | Производительность MSYS2 Bash (Windows) при доступе к файлам WSL                     |
 
 ### Между окружениями
 
-| Сравнение                                              | Что показывает                                                                                 |
-|--------------------------------------------------------|------------------------------------------------------------------------------------------------|
-| Git Bash (Windows) `native` vs Git Bash (WSL) `native` | Разницу нативной производительности файловых систем Windows и WSL при одном runtime (Git Bash) |
+| Сравнение                                                | Что показывает                                                                 |
+|----------------------------------------------------------|--------------------------------------------------------------------------------|
+| MSYS2 Bash (Windows) `native` vs WSL Bash `native`       | Суммарную разницу файловой системы и runtime между Windows и WSL              |
 
-Прямое сравнение между PowerShell, Git Bash и WSL Bash показывает не только скорость файловой системы, но и разницу runtime, shell и системных API.
+Сравнения между разными окружениями включают и разницу файловой системы, и разницу runtime.
 
 ## Требования
 
 - Windows
-- WSL
+- WSL2
 - PowerShell
-- Bash / Git Bash
+- MSYS2 Bash — https://www.msys2.org/
 - Node.js и npm
