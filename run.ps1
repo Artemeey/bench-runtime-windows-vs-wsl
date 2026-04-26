@@ -84,14 +84,14 @@ Write-Output ""
 
 # Сначала запускаем все native-сценарии (cross_fs=false).
 Write-Output "$emojiModeNative Running native mode (cross_fs=false)"
-Run-Test "files-find" "false" "none" { & "$powershellTestsDir\files-find.ps1" $false } "proxy=false"
-Run-Test "files-create-delete" "false" "none" { & "$powershellTestsDir\files-create-delete.ps1" $false } "proxy=false"
 Run-Test "npm-install" "false" "true" { & "$powershellTestsDir\npm-install.ps1" $false $true } "proxy=false,use_cache=true"
 Run-Test "npm-install" "false" "false" { & "$powershellTestsDir\npm-install.ps1" $false $false } "proxy=false,use_cache=false"
+Run-Test "files-find" "false" "none" { & "$powershellTestsDir\files-find.ps1" $false } "proxy=false"
+Run-Test "files-create-delete" "false" "none" { & "$powershellTestsDir\files-create-delete.ps1" $false } "proxy=false"
 
 # Затем запускаем все proxy-сценарии (cross_fs=true).
 Write-Output "$emojiModeProxy Running proxy mode (cross_fs=true)"
-Run-Test "files-find" "true" "none" { & "$powershellTestsDir\files-find.ps1" $true } "proxy=true"
-Run-Test "files-create-delete" "true" "none" { & "$powershellTestsDir\files-create-delete.ps1" $true } "proxy=true"
 Run-Test "npm-install" "true" "true" { & "$powershellTestsDir\npm-install.ps1" $true $true } "proxy=true,use_cache=true"
 Run-Test "npm-install" "true" "false" { & "$powershellTestsDir\npm-install.ps1" $true $false } "proxy=true,use_cache=false"
+Run-Test "files-find" "true" "none" { & "$powershellTestsDir\files-find.ps1" $true } "proxy=true"
+Run-Test "files-create-delete" "true" "none" { & "$powershellTestsDir\files-create-delete.ps1" $true } "proxy=true"
