@@ -79,8 +79,7 @@ Bash:
 
 ```bash
 # настроить доступ один раз
-sudo chmod +x *.sh
-sudo chmod +x bash/*.sh
+sudo chmod +x *.sh bash/*.sh
 
 bash/npm-install.sh false true
 ```

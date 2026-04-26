@@ -60,8 +60,7 @@ Bash:
 
 ```bash
 # setup execute permissions once
-sudo chmod +x *.sh
-sudo chmod +x bash/*.sh
+sudo chmod +x *.sh bash/*.sh
 
 ./run.sh
 ```
