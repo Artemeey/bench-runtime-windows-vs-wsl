@@ -81,7 +81,7 @@ get_fs_type_local() {
 # Определяем тип файловой системы по пути внутри WSL.
 get_fs_type_wsl() {
 	local path="$1"
-	wsl -d "$WSL_DISTRO" bash -lc "df -T '$path' 2>/dev/null | awk 'NR==2 {print \\$2}'" 2>/dev/null
+	wsl -d "$WSL_DISTRO" bash -lc "df -T '$path' 2>/dev/null | sed -n '2p' | tr -s ' ' | cut -d' ' -f2" 2>/dev/null
 }
 
 windows_path_for_bash="$(windows_path_to_git_bash_path "$TESTS_FS_WINDOWS")"
