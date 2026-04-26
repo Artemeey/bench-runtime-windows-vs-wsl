@@ -34,6 +34,8 @@ Typical mixed-scenario examples:
 - Tests are run on an idle system.
 - Tests run sequentially; parallel run is not allowed.
 - Tests can be run multiple times; all results are preserved in CSV.
+- The primary metric is execution time. In these tests, it directly reflects filesystem performance.
+- Additional CPU metrics are shown only in tests where they are easy to measure.
 
 ## Modes
 
