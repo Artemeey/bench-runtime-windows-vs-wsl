@@ -8,28 +8,17 @@ Benchmark suite for comparing Windows and WSL performance in real development sc
 - `files-create-delete` — create and delete 10,000 small files
 - `npm-install` — install npm dependencies with and without cache
 
+## Test correctness
+
+- Bash and PowerShell test suites use the most equivalent operations for their own runtimes and system APIs.
+- Git Bash can run on both Windows and WSL. For clean comparison, run it twice:
+  - Git Bash (Windows)
+  - Git Bash (WSL)
+
 ## Modes
 
 - `native` — filesystem of the current environment
 - `proxy` — access across the Windows ↔ WSL boundary
-
-## Benchmark equivalence
-
-PowerShell and Bash scripts do not execute the same commands. They use different runtimes and system APIs.
-
-The benchmark compares equivalent operations:
-
-- `files-find`
-  - PowerShell: recursive enumeration via .NET APIs
-  - Bash: recursive enumeration via `find`
-- `files-create-delete`
-  - PowerShell: file operations via .NET APIs
-  - Bash: file operations via shell utilities
-- `npm-install`
-  - both variants execute `npm install`
-  - cache mode is controlled explicitly
-
-Results must be interpreted as runtime/environment benchmarks, not pure filesystem microbenchmarks.
 
 ## Environment setup
 
@@ -66,13 +55,22 @@ chmod +x *.sh
 
 ## Reading results
 
-Compare results within the same environment:
+### Within the same environment
 
-- PowerShell native vs proxy
-- WSL Bash native vs proxy
-- Git Bash native vs proxy
+| Comparison                                                | What it shows                                                                       |
+|-----------------------------------------------------------|-------------------------------------------------------------------------------------|
+| PowerShell `native` vs PowerShell `proxy`                 | PowerShell performance when accessing WSL files across the Windows ↔ WSL boundary   |
+| WSL Bash `native` vs WSL Bash `proxy`                     | WSL Bash performance when accessing Windows files across the Windows ↔ WSL boundary |
+| Git Bash (Windows) `native` vs Git Bash (Windows) `proxy` | Git Bash (Windows) performance when accessing WSL files                             |
+| Git Bash (WSL) `native` vs Git Bash (WSL) `proxy`         | Git Bash (WSL) performance when accessing Windows files                             |
 
-Cross-environment comparison reflects differences in runtime, shell and system layers.
+### Across environments
+
+| Comparison                                             | What it shows                                                                                         |
+|--------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| Git Bash (Windows) `native` vs Git Bash (WSL) `native` | Difference in native filesystem performance between Windows and WSL using the same runtime (Git Bash) |
+
+Cross-environment comparison reflects differences in runtime, shell, and system APIs.
 
 ## Requirements
 
