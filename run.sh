@@ -89,7 +89,10 @@ report_block="$({
 
 echo "$report_block" | tee -a "$RESULTS_TXT"
 
+echo "";
 "$BASH_TESTS_DIR/setup-fs.sh"
+
+echo "";
 
 # Сначала запускаем все native-сценарии (cross_fs=false).
 echo "🟢 Запускаем режим native (cross_fs=false)"

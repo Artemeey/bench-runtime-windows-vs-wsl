@@ -77,7 +77,10 @@ $reportLines = @(
 $reportLines | Write-Output
 $reportLines | Add-Content -Path $resultsTxt -Encoding utf8
 
+Write-Output ""
 & "$powershellTestsDir\setup-fs.ps1"
+
+Write-Output ""
 
 # Сначала запускаем все native-сценарии (cross_fs=false).
 Write-Output "$emojiModeNative Запускаем режим native (cross_fs=false)"
