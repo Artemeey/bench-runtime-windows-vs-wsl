@@ -43,14 +43,14 @@ export WSL_DISTRO="Ubuntu"
 PowerShell:
 
 ```powershell
-.\run.ps1
+.\powershell\run.ps1
 ```
 
 Bash / Git Bash:
 
 ```bash
-chmod +x *.sh
-./run.sh
+chmod +x bash/*.sh
+./bash/run.sh
 ```
 
 ## Как читать результаты

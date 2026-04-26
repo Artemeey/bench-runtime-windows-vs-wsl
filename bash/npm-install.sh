@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# npm install benchmark
+# Выполняем бенчмарк `npm install` в двух сценариях: с кешем и без кеша.
 
 set -euo pipefail
 

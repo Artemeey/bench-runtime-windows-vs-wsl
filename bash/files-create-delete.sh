@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Create and delete 10k files and measure time/CPU
+# Создаём и удаляем 10 000 файлов.
 
 set -euo pipefail
 

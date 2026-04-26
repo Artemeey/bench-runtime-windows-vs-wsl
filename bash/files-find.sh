@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Count files recursively and measure time/CPU
+# Считаем количество файлов рекурсивно.
 
 set -euo pipefail
 
@@ -24,7 +24,7 @@ fi
 COUNT_FILE="$(mktemp)"
 TIMEFORMAT="%3R %3U %3S"
 
-# Capture real/user/sys from bash built-in time
+# Считываем real/user/sys из встроенной команды `time` в Bash.
 TIME_RESULT="$({ time find "$ROOT" -type f > "$COUNT_FILE"; } 2>&1)"
 read -r REAL_TIME USER_CPU SYS_CPU <<< "$TIME_RESULT"
 
