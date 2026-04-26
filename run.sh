@@ -10,8 +10,11 @@ BASH_TESTS_DIR="$SCRIPT_DIR/bash"
 RESULTS_DIR="$PROJECT_ROOT/results"
 mkdir -p "$RESULTS_DIR"
 CSV="$RESULTS_DIR/results.csv"
+RESULTS_TXT="$RESULTS_DIR/results.txt"
 
-echo "runtime,test,mode,cache,files,time,cpu_user,cpu_sys" > "$CSV"
+if [ ! -f "$CSV" ]; then
+	echo "runtime,test,cross_fs,cache,files,time,cpu_user,cpu_sys" > "$CSV"
+fi
 
 # Приводим вывод отдельного теста к формату CSV-полей.
 parse_result() {
@@ -24,7 +27,8 @@ parse_result() {
 	cpu="$(echo "$output" | grep '^cpu:' | sed 's/cpu: //')"
 
 	user="$(echo "$cpu" | cut -d' ' -f1)"
-	sys="$(echo "$cpu" | awk -F'\+ ' '{print $2}' | sed 's/ sys sec//')"
+	local sys_part="${cpu#*+ }"
+	sys="${sys_part% sys sec}"
 
 	echo "$files,$time,$user,$sys"
 }
@@ -32,27 +36,19 @@ parse_result() {
 # Выполняем один тест и пишем строку результата с метаданными сценария.
 run_test() {
 	local name="$1"
-	local mode="$2"
+	local cross_fs="$2"
 	local cache="$3"
 	local script="$4"
 	local separator="${5:-}"
 
 	if [ "$separator" != "--" ]; then
-		echo "Usage: run_test <name> <mode> <cache> <script> -- [args...]" >&2
+		echo "Usage: run_test <name> <cross_fs> <cache> <script> -- [args...]" >&2
 		exit 1
 	fi
 
-	# Выводим параметры сценария перед запуском теста.
-	echo "=== test ==="
-	echo "runtime: bash"
-	echo "test: $name"
-	echo "mode: $mode"
-	echo "cache: $cache"
-	echo "script: $script"
-	echo "args: ${*:6}"
-	echo "TESTS_FS_WINDOWS: ${TESTS_FS_WINDOWS:-}"
-	echo "TESTS_FS_WSL: ${TESTS_FS_WSL:-}"
-	echo "WSL_DISTRO: ${WSL_DISTRO:-}"
+	# Печатаем короткий заголовок сценария, чтобы тесты не сливались в логе.
+	echo
+	echo "🧪 $name | cross_fs=$cross_fs | cache=$cache | args=${*:6}"
 
 	# Вызываем скрипт теста отдельно от служебных параметров run_test:
 	# первые 4 аргумента — метаданные строки CSV, 5-й — разделитель `--`,
@@ -60,25 +56,53 @@ run_test() {
 	local output
 	output="$("$script" "${@:6}")"
 
+	echo $output
+
 	local parsed
 	parsed="$(parse_result "$output")"
 
-	echo "bash,$name,$mode,$cache,$parsed" >> "$CSV"
+	echo "bash,$name,$cross_fs,$cache,$parsed" >> "$CSV"
 }
 
 # Подготавливаем тестовые директории перед запуском всех бенчмарков.
+set -a && source "$PROJECT_ROOT/.env" && set +a
+
+# Сохраняем версии инструментов и параметры запуска в текстовый отчёт.
+wsl_version_raw="$(wsl --version 2>/dev/null | tr -d '\000' | sed -E 's/[^[:print:]]//g' | head -n 1 || true)"
+wsl_version="$(echo "$wsl_version_raw" | grep -Eo '[0-9]+(\.[0-9]+)+' | head -n 1 || true)"
+windows_os="$(uname -sr 2>/dev/null | sed -E 's/^.*(NT-[0-9.]+).*$/Windows \1/' || true)"
+unix_os="$(uname -srmo 2>/dev/null || echo not found)"
+
+report_block="$({
+	[ -s "$RESULTS_TXT" ] && echo
+	echo "🟦 runtime: bash"
+	echo "runtime: bash"
+	echo "os_unix: $unix_os"
+	echo "os_windows: $windows_os"
+	echo "bash: ${BASH_VERSION:-unknown}"
+	echo "node: $(node -v 2>/dev/null || echo not found)"
+	echo "npm: $(npm -v 2>/dev/null || echo not found)"
+	echo "wsl: $wsl_version"
+	echo "TESTS_FS_WINDOWS: ${TESTS_FS_WINDOWS:-}"
+	echo "TESTS_FS_WSL: ${TESTS_FS_WSL:-}"
+	echo "WSL_DISTRO: ${WSL_DISTRO:-}"
+})"
+
+echo "$report_block" | tee -a "$RESULTS_TXT"
+
 "$BASH_TESTS_DIR/setup-fs.sh"
 
-# Запускаем тест рекурсивного обхода файлов.
-run_test "files-find" "native" "none" "$BASH_TESTS_DIR/files-find.sh" -- false
-run_test "files-find" "proxy" "none" "$BASH_TESTS_DIR/files-find.sh" -- true
+# Печатаем параметры окружения один раз на весь прогон.
+echo "⚙️ runtime=bash | TESTS_FS_WINDOWS=${TESTS_FS_WINDOWS:-} | TESTS_FS_WSL=${TESTS_FS_WSL:-} | WSL_DISTRO=${WSL_DISTRO:-}"
 
-# Запускаем тест массового создания и удаления файлов.
-run_test "files-create-delete" "native" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- false
-run_test "files-create-delete" "proxy" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- true
+# Сначала запускаем все native-сценарии (cross_fs=false).
+run_test "files-find" "false" "none" "$BASH_TESTS_DIR/files-find.sh" -- false
+run_test "files-create-delete" "false" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- false
+run_test "npm-install" "false" "true" "$BASH_TESTS_DIR/npm-install.sh" -- false true
+run_test "npm-install" "false" "false" "$BASH_TESTS_DIR/npm-install.sh" -- false false
 
-# Запускаем тест npm-install с прогретым и пустым кешем.
-run_test "npm-install" "native" "true" "$BASH_TESTS_DIR/npm-install.sh" -- false true
-run_test "npm-install" "native" "false" "$BASH_TESTS_DIR/npm-install.sh" -- false false
-run_test "npm-install" "proxy" "true" "$BASH_TESTS_DIR/npm-install.sh" -- true true
-run_test "npm-install" "proxy" "false" "$BASH_TESTS_DIR/npm-install.sh" -- true false
+# Затем запускаем все proxy-сценарии (cross_fs=true).
+run_test "files-find" "true" "none" "$BASH_TESTS_DIR/files-find.sh" -- true
+run_test "files-create-delete" "true" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- true
+run_test "npm-install" "true" "true" "$BASH_TESTS_DIR/npm-install.sh" -- true true
+run_test "npm-install" "true" "false" "$BASH_TESTS_DIR/npm-install.sh" -- true false

@@ -1,6 +1,8 @@
 # Запускаем все бенчмарки проекта и сохраняем результаты в CSV.
 
 $ErrorActionPreference = "Stop"
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+$OutputEncoding = [System.Text.UTF8Encoding]::new()
 
 $projectRoot = $PSScriptRoot
 $powershellTestsDir = Join-Path $projectRoot "powershell"
@@ -17,6 +19,10 @@ function Parse-Result {
 	$files = ($output | Where-Object { $_ -like "files:*" }) -replace "files: ", ""
 	$time = ($output | Where-Object { $_ -like "time:*" }) -replace "time: ", "" -replace " sec", ""
 	$cpuLine = ($output | Where-Object { $_ -like "cpu:*" }) -replace "cpu: ", ""
+
+	if ([string]::IsNullOrWhiteSpace($cpuLine) -or $cpuLine -notmatch ' user \+ ') {
+		return @{ files=$files; time=$time; cpu_user=""; cpu_sys="" }
+	}
 
 	$parts = $cpuLine -split " user \+ "
 	$user = $parts[0]
@@ -46,7 +52,9 @@ function Run-Test {
 	"powershell,$name,$mode,$cache,$($res.files),$($res.time),$($res.cpu_user),$($res.cpu_sys)" | Add-Content $csv
 }
 
-# Подготавливаем тестовые директории перед запуском всех бенчмарков.
+# Загружаем переменные окружения из `.env` через общий скрипт env.ps1.
+. (Join-Path $projectRoot "env.ps1")
+
 & "$powershellTestsDir\setup-fs.ps1"
 
 # Запускаем тест рекурсивного обхода файлов.
