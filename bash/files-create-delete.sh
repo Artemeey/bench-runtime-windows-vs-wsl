@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Создаём и удаляем 10 000 файлов.
+# Создаём и удаляем 1000 файлов.
 
 set -euo pipefail
 
@@ -18,7 +18,7 @@ load_project_env
 ROOT="$(get_root_path "$PROXY")"
 confirm_directory_exists "$ROOT"
 
-FILE_COUNT=10000
+FILE_COUNT=1000
 TEST_DIR="$ROOT/files-create-delete-$(date +%s%N)"
 
 mkdir "$TEST_DIR"

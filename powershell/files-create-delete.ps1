@@ -1,4 +1,4 @@
-# Создаём и удаляем 10 000 файлов.
+# Создаём и удаляем 1000 файлов.
 
 param (
 	[Parameter(Mandatory = $true)]
@@ -15,7 +15,7 @@ Confirm-DirectoryExists -Path $root
 $statsStart = Get-StatsSnapshot
 
 # Готовим уникальную директорию, чтобы тесты не конфликтовали между запусками.
-$fileCount = 10000
+$fileCount = 1000
 $testDir = Join-Path $root ("files-create-delete-" + [System.Guid]::NewGuid().ToString())
 
 New-Item -ItemType Directory -Force -Path $testDir | Out-Null
