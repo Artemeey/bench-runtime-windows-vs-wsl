@@ -27,7 +27,13 @@ if (-not $UseCache) {
 	npm cache clean --force | Out-Null
 }
 
-npm ci --prefix $npmDir | Out-Null
+# Запускаем npm ci из директории теста.
+Push-Location $npmDir
+try {
+	npm ci | Out-Null
+} finally {
+	Pop-Location
+}
 
 # Снимаем текущие метрики после завершения теста.
 $statsCurrent = Get-StatsSnapshot

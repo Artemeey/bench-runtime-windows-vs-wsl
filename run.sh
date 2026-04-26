@@ -55,7 +55,7 @@ run_test() {
 	local output
 	output="$("$script" "${@:6}")"
 
-	echo $output
+	echo "$output"
 
 	local parsed
 	parsed="$(parse_result "$output")"
@@ -70,7 +70,7 @@ load_project_env
 wsl_version_raw="$(wsl --version 2>/dev/null | tr -d '\000' | sed -E 's/[^[:print:]]//g' | head -n 1 || true)"
 wsl_version="$(echo "$wsl_version_raw" | grep -Eo '[0-9]+(\.[0-9]+)+' | head -n 1 || true)"
 windows_os="$(uname -sr 2>/dev/null | sed -E 's/^.*(NT-[0-9.]+).*$/Windows \1/' || true)"
-unix_os="$(uname -srmo 2>/dev/null || echo not found)"
+unix_os="$(uname -srmo 2>/dev/null || true)"
 
 report_block="$({
 	[ -s "$RESULTS_TXT" ] && echo
@@ -79,8 +79,8 @@ report_block="$({
 	echo "os_unix: $unix_os"
 	echo "os_windows: $windows_os"
 	echo "bash: ${BASH_VERSION:-unknown}"
-	echo "node: $(node -v 2>/dev/null || echo not found)"
-	echo "npm: $(npm -v 2>/dev/null || echo not found)"
+	echo "node: $(node -v 2>/dev/null || true)"
+	echo "npm: $(npm -v 2>/dev/null || true)"
 	echo "wsl: $wsl_version"
 	echo "TESTS_FS_WINDOWS: ${TESTS_FS_WINDOWS:-}"
 	echo "TESTS_FS_WSL: ${TESTS_FS_WSL:-}"
