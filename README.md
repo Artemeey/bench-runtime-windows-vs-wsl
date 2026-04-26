@@ -23,7 +23,10 @@ Benchmark suite for comparing Windows and WSL performance in real development sc
 - Default values are stored in `.env`.
 - All scripts load `.env` automatically.
 
-## Run
+## Run tests
+
+Test results are written to `results/results.csv` and `results.txt`.  
+Results are not cleared automatically.
 
 PowerShell:
 
@@ -34,7 +37,6 @@ PowerShell:
 Bash:
 
 ```bash
-chmod +x run.sh bash/*.sh
 ./run.sh
 ```
 
@@ -56,17 +58,17 @@ PowerShell:
 
 ### Within the same environment
 
-| Comparison                                                   | What it shows                                                                       |
-|--------------------------------------------------------------|-------------------------------------------------------------------------------------|
-| PowerShell `native` vs PowerShell `proxy`                    | PowerShell performance when accessing WSL files across the Windows ↔ WSL boundary   |
-| WSL Bash `native` vs WSL Bash `proxy`                        | WSL Bash performance when accessing Windows files across the Windows ↔ WSL boundary |
-| MSYS2 Bash (Windows) `native` vs MSYS2 Bash (Windows) `proxy` | MSYS2 Bash (Windows) performance when accessing WSL files                           |
+| Run source | Comparison                                                    | What it shows                                                                       |
+|------------|---------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| Windows    | PowerShell `native` vs PowerShell `proxy`                     | PowerShell performance when accessing WSL files across the Windows ↔ WSL boundary   |
+| Windows    | MSYS2 Bash (Windows) `native` vs MSYS2 Bash (Windows) `proxy` | MSYS2 Bash (Windows) performance when accessing WSL files                           |
+| WSL2       | WSL Bash `native` vs WSL Bash `proxy`                         | WSL Bash performance when accessing Windows files across the Windows ↔ WSL boundary |
 
 ### Across environments
 
-| Comparison                                        | What it shows                                              |
-|---------------------------------------------------|------------------------------------------------------------|
-| MSYS2 Bash (Windows) `native` vs WSL Bash `native` | Combined filesystem + runtime difference between Windows and WSL |
+| Run source     | Comparison                                         | What it shows                                                    |
+|----------------|----------------------------------------------------|------------------------------------------------------------------|
+| Windows / WSL2 | MSYS2 Bash (Windows) `native` vs WSL Bash `native` | Combined filesystem + runtime difference between Windows and WSL |
 
 Cross-environment comparisons include both filesystem and runtime differences.
 
