@@ -3,6 +3,7 @@
 # Создаём и удаляем 10 000 файлов.
 
 set -euo pipefail
+export LC_NUMERIC=C
 
 if [ "$#" -ne 1 ]; then
 	echo "Usage: $0 <true|false>"
@@ -39,4 +40,5 @@ read -r REAL_TIME USER_CPU SYS_CPU <<< "$TIME_RESULT"
 
 echo "files: $FILE_COUNT"
 echo "time: $REAL_TIME sec"
-echo "cpu: $USER_CPU user + $SYS_CPU sys sec"
+echo "cpu_user: $USER_CPU sec"
+echo "cpu_sys: $SYS_CPU sec"

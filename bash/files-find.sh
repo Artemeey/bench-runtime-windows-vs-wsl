@@ -3,6 +3,7 @@
 # Считаем количество файлов рекурсивно.
 
 set -euo pipefail
+export LC_NUMERIC=C
 
 if [ "$#" -ne 1 ]; then
 	echo "Usage: $0 <true|false>"
@@ -33,4 +34,5 @@ rm -f "$COUNT_FILE"
 
 echo "files: $FILES"
 echo "time: $REAL_TIME sec"
-echo "cpu: $USER_CPU user + $SYS_CPU sys sec"
+echo "cpu_user: $USER_CPU sec"
+echo "cpu_sys: $SYS_CPU sec"

@@ -36,5 +36,6 @@ $culture = [System.Globalization.CultureInfo]::InvariantCulture
 
 # Печатаем результат в формате для run.ps1.
 Write-Output ("files: {0}" -f $count)
-Write-Output ("time: {0} sec" -f $timer.Elapsed.TotalSeconds.ToString("F3", $culture))
-Write-Output ("cpu: {0} user + {1} sys sec" -f $userCpu.ToString("F3", $culture), $sysCpu.ToString("F3", $culture))
+Write-Output ("time: {0} sec" -f $timer.Elapsed.TotalSeconds.ToString($culture))
+Write-Output ("cpu_user: {0} sec" -f $userCpu.ToString($culture))
+Write-Output ("cpu_sys: {0} sec" -f $sysCpu.ToString($culture))

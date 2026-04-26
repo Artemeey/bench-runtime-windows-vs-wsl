@@ -20,15 +20,12 @@ fi
 parse_result() {
 	local output="$1"
 
-	local files time cpu user sys
+	local files time user sys
 
 	files="$(echo "$output" | grep '^files:' | sed 's/files: //')"
 	time="$(echo "$output" | grep '^time:' | sed 's/time: //' | sed 's/ sec//')"
-	cpu="$(echo "$output" | grep '^cpu:' | sed 's/cpu: //')"
-
-	user="$(echo "$cpu" | cut -d' ' -f1)"
-	local sys_part="${cpu#*+ }"
-	sys="${sys_part% sys sec}"
+	user="$(echo "$output" | grep '^cpu_user:' | sed 's/cpu_user: //' | sed 's/ sec//')"
+	sys="$(echo "$output" | grep '^cpu_sys:' | sed 's/cpu_sys: //' | sed 's/ sec//')"
 
 	echo "$files,$time,$user,$sys"
 }
@@ -65,7 +62,7 @@ run_test() {
 }
 
 # Подготавливаем тестовые директории перед запуском всех бенчмарков.
-set -a && source "$PROJECT_ROOT/.env" && set +a
+[ -f "$PROJECT_ROOT/.env" ] && set -a && . "$PROJECT_ROOT/.env" && set +a
 
 # Сохраняем версии инструментов и параметры запуска в текстовый отчёт.
 wsl_version_raw="$(wsl --version 2>/dev/null | tr -d '\000' | sed -E 's/[^[:print:]]//g' | head -n 1 || true)"

@@ -3,6 +3,7 @@
 # Выполняем бенчмарк установки npm-зависимостей с кешем и без кеша.
 
 set -euo pipefail
+export LC_NUMERIC=C
 
 if [ "$#" -ne 2 ]; then
 	echo "Usage: $0 <true|false> <true|false>"
@@ -39,4 +40,5 @@ FILES="$(find "$NPM_DIR/node_modules" -type f 2>/dev/null | wc -l | tr -d ' ')"
 # Печатаем результат в формате для run.sh.
 echo "files: ${FILES:-0}"
 echo "time: $REAL_TIME sec"
-echo "cpu: $USER_CPU user + $SYS_CPU sys sec"
+echo "cpu_user: $USER_CPU sec"
+echo "cpu_sys: $SYS_CPU sec"
