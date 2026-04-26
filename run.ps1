@@ -2,7 +2,8 @@
 
 $ErrorActionPreference = "Stop"
 
-$projectRoot = Split-Path -Parent $PSScriptRoot
+$projectRoot = $PSScriptRoot
+$powershellTestsDir = Join-Path $projectRoot "powershell"
 $resultsDir = Join-Path $projectRoot "results"
 New-Item -ItemType Directory -Force -Path $resultsDir | Out-Null
 
@@ -26,7 +27,18 @@ function Parse-Result {
 
 # Выполняем один тест и пишем строку результата с метаданными сценария.
 function Run-Test {
-	param ($name, $mode, $cache, $script)
+	param ($name, $mode, $cache, $script, $argsText)
+
+	# Выводим параметры сценария перед запуском теста.
+	Write-Output "=== test ==="
+	Write-Output "runtime: powershell"
+	Write-Output "test: $name"
+	Write-Output "mode: $mode"
+	Write-Output "cache: $cache"
+	Write-Output "args: $argsText"
+	Write-Output "TESTS_FS_WINDOWS: $($env:TESTS_FS_WINDOWS)"
+	Write-Output "TESTS_FS_WSL: $($env:TESTS_FS_WSL)"
+	Write-Output "WSL_DISTRO: $($env:WSL_DISTRO)"
 
 	$output = & $script
 	$res = Parse-Result $output
@@ -35,18 +47,18 @@ function Run-Test {
 }
 
 # Подготавливаем тестовые директории перед запуском всех бенчмарков.
-& "$PSScriptRoot\setup-fs.ps1"
+& "$powershellTestsDir\setup-fs.ps1"
 
 # Запускаем тест рекурсивного обхода файлов.
-Run-Test "files-find" "native" "none" { & "$PSScriptRoot\files-find.ps1" $false }
-Run-Test "files-find" "proxy" "none" { & "$PSScriptRoot\files-find.ps1" $true }
+Run-Test "files-find" "native" "none" { & "$powershellTestsDir\files-find.ps1" $false } "proxy=false"
+Run-Test "files-find" "proxy" "none" { & "$powershellTestsDir\files-find.ps1" $true } "proxy=true"
 
 # Запускаем тест массового создания и удаления файлов.
-Run-Test "files-create-delete" "native" "none" { & "$PSScriptRoot\files-create-delete.ps1" $false }
-Run-Test "files-create-delete" "proxy" "none" { & "$PSScriptRoot\files-create-delete.ps1" $true }
+Run-Test "files-create-delete" "native" "none" { & "$powershellTestsDir\files-create-delete.ps1" $false } "proxy=false"
+Run-Test "files-create-delete" "proxy" "none" { & "$powershellTestsDir\files-create-delete.ps1" $true } "proxy=true"
 
 # Запускаем тест npm-install с прогретым и пустым кешем.
-Run-Test "npm-install" "native" "true" { & "$PSScriptRoot\npm-install.ps1" $false $true }
-Run-Test "npm-install" "native" "false" { & "$PSScriptRoot\npm-install.ps1" $false $false }
-Run-Test "npm-install" "proxy" "true" { & "$PSScriptRoot\npm-install.ps1" $true $true }
-Run-Test "npm-install" "proxy" "false" { & "$PSScriptRoot\npm-install.ps1" $true $false }
+Run-Test "npm-install" "native" "true" { & "$powershellTestsDir\npm-install.ps1" $false $true } "proxy=false,use_cache=true"
+Run-Test "npm-install" "native" "false" { & "$powershellTestsDir\npm-install.ps1" $false $false } "proxy=false,use_cache=false"
+Run-Test "npm-install" "proxy" "true" { & "$powershellTestsDir\npm-install.ps1" $true $true } "proxy=true,use_cache=true"
+Run-Test "npm-install" "proxy" "false" { & "$powershellTestsDir\npm-install.ps1" $true $false } "proxy=true,use_cache=false"

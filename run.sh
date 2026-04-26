@@ -42,6 +42,18 @@ run_test() {
 		exit 1
 	fi
 
+	# Выводим параметры сценария перед запуском теста.
+	echo "=== test ==="
+	echo "runtime: bash"
+	echo "test: $name"
+	echo "mode: $mode"
+	echo "cache: $cache"
+	echo "script: $script"
+	echo "args: ${*:6}"
+	echo "TESTS_FS_WINDOWS: ${TESTS_FS_WINDOWS:-}"
+	echo "TESTS_FS_WSL: ${TESTS_FS_WSL:-}"
+	echo "WSL_DISTRO: ${WSL_DISTRO:-}"
+
 	# Вызываем скрипт теста отдельно от служебных параметров run_test:
 	# первые 4 аргумента — метаданные строки CSV, 5-й — разделитель `--`,
 	# аргументы с 6-го — параметры теста.
