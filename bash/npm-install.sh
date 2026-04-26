@@ -43,7 +43,7 @@ fi
 
 # Запускаем измерение wall-clock времени и CPU через встроенный `time`.
 TIMEFORMAT="%3R %3U %3S"
-TIME_RESULT="$({ time (cd "$NPM_DIR" && npm ci > /dev/null); } 2>&1)"
+TIME_RESULT="$({ time (cd "$NPM_DIR" && npm ci --ignore-scripts > /dev/null); } 2>&1)"
 
 read -r REAL_TIME USER_CPU SYS_CPU <<< "$TIME_RESULT"
 
