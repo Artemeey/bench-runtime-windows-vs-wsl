@@ -1,0 +1,289 @@
+🟦 runtime: bash
+os_unix: MINGW64_NT-10.0-26200 3.6.6-1cdd4371.x86_64 x86_64 Msys
+os_windows: Windows NT-10.0
+wsl: 2.6.3.0 (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> ntfs
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.37(1)-release
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: bash
+os_unix: MINGW64_NT-10.0-26200 3.6.6-1cdd4371.x86_64 x86_64 Msys
+os_windows: Windows NT-10.0
+wsl: 2.6.3.0 (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> ntfs
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.37(1)-release
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: bash
+os_unix: MINGW64_NT-10.0-26200 3.6.6-1cdd4371.x86_64 x86_64 Msys
+os_windows: Windows NT-10.0
+wsl: 2.6.3.0 (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> ntfs
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.37(1)-release
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: bash
+os_unix: MINGW64_NT-10.0-26200 3.6.6-1cdd4371.x86_64 x86_64 Msys
+os_windows: Windows NT-10.0
+wsl: 2.6.3.0 (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> ntfs
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.37(1)-release
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: bash
+os_unix: MINGW64_NT-10.0-26200 3.6.6-1cdd4371.x86_64 x86_64 Msys
+os_windows: Windows NT-10.0
+wsl: 2.6.3.0 (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> ntfs
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.37(1)-release
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: bash
+os_unix: MINGW64_NT-10.0-26200 3.6.6-1cdd4371.x86_64 x86_64 Msys
+os_windows: Windows NT-10.0
+wsl: 2.6.3.0 (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> ntfs
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.37(1)-release
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: bash
+os_unix: MINGW64_NT-10.0-26200 3.6.6-1cdd4371.x86_64 x86_64 Msys
+os_windows: Windows NT-10.0
+wsl: 2.6.3.0 (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> ntfs
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.37(1)-release
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: bash
+os_unix: MINGW64_NT-10.0-26200 3.6.6-1cdd4371.x86_64 x86_64 Msys
+os_windows: Windows NT-10.0
+wsl: 2.6.3.0 (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> ntfs
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.37(1)-release
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: bash
+os_unix: MINGW64_NT-10.0-26200 3.6.6-1cdd4371.x86_64 x86_64 Msys
+os_windows: Windows NT-10.0
+wsl: 2.6.3.0 (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> ntfs
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.37(1)-release
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: bash
+os_unix: MINGW64_NT-10.0-26200 3.6.6-1cdd4371.x86_64 x86_64 Msys
+os_windows: Windows NT-10.0
+wsl: 2.6.3.0 (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> ntfs
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.37(1)-release
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: powershell
+os_windows: Майкрософт Windows 11 Домашняя 10.0.26200
+powershell: 5.1.26100.8115
+wsl: 2.6.3.0 Ubuntu
+fs_windows: C:/Windows/Temp/tests-fs -> NTFS
+fs_wsl: /tmp/tests-fs -> ext4
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: powershell
+os_windows: Майкрософт Windows 11 Домашняя 10.0.26200
+powershell: 5.1.26100.8115
+wsl: 2.6.3.0 Ubuntu
+fs_windows: C:/Windows/Temp/tests-fs -> NTFS
+fs_wsl: /tmp/tests-fs -> ext4
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: powershell
+os_windows: Майкрософт Windows 11 Домашняя 10.0.26200
+powershell: 5.1.26100.8115
+wsl: 2.6.3.0 Ubuntu
+fs_windows: C:/Windows/Temp/tests-fs -> NTFS
+fs_wsl: /tmp/tests-fs -> ext4
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: powershell
+os_windows: Майкрософт Windows 11 Домашняя 10.0.26200
+powershell: 5.1.26100.8115
+wsl: 2.6.3.0 Ubuntu
+fs_windows: C:/Windows/Temp/tests-fs -> NTFS
+fs_wsl: /tmp/tests-fs -> ext4
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: powershell
+os_windows: Майкрософт Windows 11 Домашняя 10.0.26200
+powershell: 5.1.26100.8115
+wsl: 2.6.3.0 Ubuntu
+fs_windows: C:/Windows/Temp/tests-fs -> NTFS
+fs_wsl: /tmp/tests-fs -> ext4
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: powershell
+os_windows: Майкрософт Windows 11 Домашняя 10.0.26200
+powershell: 5.1.26100.8115
+wsl: 2.6.3.0 Ubuntu
+fs_windows: C:/Windows/Temp/tests-fs -> NTFS
+fs_wsl: /tmp/tests-fs -> ext4
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: powershell
+os_windows: Майкрософт Windows 11 Домашняя 10.0.26200
+powershell: 5.1.26100.8115
+wsl: 2.6.3.0 Ubuntu
+fs_windows: C:/Windows/Temp/tests-fs -> NTFS
+fs_wsl: /tmp/tests-fs -> ext4
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: powershell
+os_windows: Майкрософт Windows 11 Домашняя 10.0.26200
+powershell: 5.1.26100.8115
+wsl: 2.6.3.0 Ubuntu
+fs_windows: C:/Windows/Temp/tests-fs -> NTFS
+fs_wsl: /tmp/tests-fs -> ext4
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: powershell
+os_windows: Майкрософт Windows 11 Домашняя 10.0.26200
+powershell: 5.1.26100.8115
+wsl: 2.6.3.0 Ubuntu
+fs_windows: C:/Windows/Temp/tests-fs -> NTFS
+fs_wsl: /tmp/tests-fs -> ext4
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: powershell
+os_windows: Майкрософт Windows 11 Домашняя 10.0.26200
+powershell: 5.1.26100.8115
+wsl: 2.6.3.0 Ubuntu
+fs_windows: C:/Windows/Temp/tests-fs -> NTFS
+fs_wsl: /tmp/tests-fs -> ext4
+node: v24.14.1
+npm: 11.4.2
+
+🟦 runtime: bash
+os_unix: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+os_windows: Linux 6.6.87.2-microsoft-standard-WSL2
+wsl:  (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> 9p
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.21(1)-release
+node: v24.15.0
+npm: 11.13.0
+
+🟦 runtime: bash
+os_unix: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+os_windows: Linux 6.6.87.2-microsoft-standard-WSL2
+wsl:  (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> 9p
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.21(1)-release
+node: v24.15.0
+npm: 11.13.0
+
+🟦 runtime: bash
+os_unix: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+os_windows: Linux 6.6.87.2-microsoft-standard-WSL2
+wsl:  (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> 9p
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.21(1)-release
+node: v24.15.0
+npm: 11.13.0
+
+🟦 runtime: bash
+os_unix: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+os_windows: Linux 6.6.87.2-microsoft-standard-WSL2
+wsl:  (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> 9p
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.21(1)-release
+node: v24.15.0
+npm: 11.13.0
+
+🟦 runtime: bash
+os_unix: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+os_windows: Linux 6.6.87.2-microsoft-standard-WSL2
+wsl:  (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> 9p
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.21(1)-release
+node: v24.15.0
+npm: 11.13.0
+
+🟦 runtime: bash
+os_unix: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+os_windows: Linux 6.6.87.2-microsoft-standard-WSL2
+wsl:  (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> 9p
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.21(1)-release
+node: v24.15.0
+npm: 11.13.0
+
+🟦 runtime: bash
+os_unix: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+os_windows: Linux 6.6.87.2-microsoft-standard-WSL2
+wsl:  (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> 9p
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.21(1)-release
+node: v24.15.0
+npm: 11.13.0
+
+🟦 runtime: bash
+os_unix: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+os_windows: Linux 6.6.87.2-microsoft-standard-WSL2
+wsl:  (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> 9p
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.21(1)-release
+node: v24.15.0
+npm: 11.13.0
+
+🟦 runtime: bash
+os_unix: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+os_windows: Linux 6.6.87.2-microsoft-standard-WSL2
+wsl:  (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> 9p
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.21(1)-release
+node: v24.15.0
+npm: 11.13.0
+
+🟦 runtime: bash
+os_unix: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+os_windows: Linux 6.6.87.2-microsoft-standard-WSL2
+wsl:  (Ubuntu)
+fs_windows: C:/Windows/Temp/tests-fs -> 9p
+fs_wsl: /tmp/tests-fs -> ext4
+bash: 5.2.21(1)-release
+node: v24.15.0
+npm: 11.13.0
