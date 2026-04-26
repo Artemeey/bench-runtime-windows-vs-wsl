@@ -5,7 +5,8 @@ $ErrorActionPreference = "Stop"
 $OutputEncoding = [System.Text.UTF8Encoding]::new()
 $emojiRuntime = [char]::ConvertFromUtf32(0x1F7EA) # 🟪 Маркер блока runtime.
 $emojiTest = [char]::ConvertFromUtf32(0x1F9EA) # 🧪 Маркер запуска теста.
-$emojiSettings = [char]::ConvertFromUtf32(0x2699) + [char]::ConvertFromUtf32(0xFE0F) # ⚙️ Маркер параметров окружения.
+$emojiModeNative = [char]::ConvertFromUtf32(0x1F7E2) # 🟢 Маркер режима native.
+$emojiModeProxy = [char]::ConvertFromUtf32(0x1F7E3) # 🟣 Маркер режима proxy.
 
 $projectRoot = $PSScriptRoot
 $powershellTestsDir = Join-Path $projectRoot "powershell"
@@ -78,16 +79,15 @@ $reportLines | Add-Content -Path $resultsTxt -Encoding utf8
 
 & "$powershellTestsDir\setup-fs.ps1"
 
-# Печатаем параметры окружения один раз на весь прогон.
-Write-Output "$emojiSettings runtime=powershell | TESTS_FS_WINDOWS=$($env:TESTS_FS_WINDOWS) | TESTS_FS_WSL=$($env:TESTS_FS_WSL) | WSL_DISTRO=$($env:WSL_DISTRO)"
-
 # Сначала запускаем все native-сценарии (cross_fs=false).
+Write-Output "$emojiModeNative Запускаем режим native (cross_fs=false)"
 Run-Test "files-find" "false" "none" { & "$powershellTestsDir\files-find.ps1" $false } "proxy=false"
 Run-Test "files-create-delete" "false" "none" { & "$powershellTestsDir\files-create-delete.ps1" $false } "proxy=false"
 Run-Test "npm-install" "false" "true" { & "$powershellTestsDir\npm-install.ps1" $false $true } "proxy=false,use_cache=true"
 Run-Test "npm-install" "false" "false" { & "$powershellTestsDir\npm-install.ps1" $false $false } "proxy=false,use_cache=false"
 
 # Затем запускаем все proxy-сценарии (cross_fs=true).
+Write-Output "$emojiModeProxy Запускаем режим proxy (cross_fs=true)"
 Run-Test "files-find" "true" "none" { & "$powershellTestsDir\files-find.ps1" $true } "proxy=true"
 Run-Test "files-create-delete" "true" "none" { & "$powershellTestsDir\files-create-delete.ps1" $true } "proxy=true"
 Run-Test "npm-install" "true" "true" { & "$powershellTestsDir\npm-install.ps1" $true $true } "proxy=true,use_cache=true"

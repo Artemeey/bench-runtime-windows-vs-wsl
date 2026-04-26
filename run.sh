@@ -91,16 +91,15 @@ echo "$report_block" | tee -a "$RESULTS_TXT"
 
 "$BASH_TESTS_DIR/setup-fs.sh"
 
-# Печатаем параметры окружения один раз на весь прогон.
-echo "⚙️ runtime=bash | TESTS_FS_WINDOWS=${TESTS_FS_WINDOWS:-} | TESTS_FS_WSL=${TESTS_FS_WSL:-} | WSL_DISTRO=${WSL_DISTRO:-}"
-
 # Сначала запускаем все native-сценарии (cross_fs=false).
+echo "🟢 Запускаем режим native (cross_fs=false)"
 run_test "files-find" "false" "none" "$BASH_TESTS_DIR/files-find.sh" -- false
 run_test "files-create-delete" "false" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- false
 run_test "npm-install" "false" "true" "$BASH_TESTS_DIR/npm-install.sh" -- false true
 run_test "npm-install" "false" "false" "$BASH_TESTS_DIR/npm-install.sh" -- false false
 
 # Затем запускаем все proxy-сценарии (cross_fs=true).
+echo "🟣 Запускаем режим proxy (cross_fs=true)"
 run_test "files-find" "true" "none" "$BASH_TESTS_DIR/files-find.sh" -- true
 run_test "files-create-delete" "true" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- true
 run_test "npm-install" "true" "true" "$BASH_TESTS_DIR/npm-install.sh" -- true true
