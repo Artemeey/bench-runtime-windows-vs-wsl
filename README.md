@@ -59,21 +59,29 @@ PowerShell:
 Bash:
 
 ```bash
+# setup execute permissions once
+sudo chmod +x *.sh
+sudo chmod +x bash/*.sh
+
 ./run.sh
 ```
 
 ### Run a single test
 
-Bash:
-
-```bash
-bash/npm-install.sh false true
-```
-
 PowerShell:
 
 ```powershell
 .\powershell\npm-install.ps1 $false $true
+```
+
+Bash:
+
+```bash
+# setup execute permissions once
+sudo chmod +x *.sh
+sudo chmod +x bash/*.sh
+
+bash/npm-install.sh false true
 ```
 
 ## Reading results

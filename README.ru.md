@@ -60,21 +60,29 @@ PowerShell:
 Bash:
 
 ```bash
+# настроить доступ один раз
+sudo chmod +x *.sh
+sudo chmod +x bash/*.sh
+
 ./run.sh
 ```
 
 ### Запуск одного теста
 
-Bash:
-
-```bash
-bash/npm-install.sh false true
-```
-
 PowerShell:
 
 ```powershell
 .\powershell\npm-install.ps1 $false $true
+```
+
+Bash:
+
+```bash
+# настроить доступ один раз
+sudo chmod +x *.sh
+sudo chmod +x bash/*.sh
+
+bash/npm-install.sh false true
 ```
 
 ## Как читать результаты
