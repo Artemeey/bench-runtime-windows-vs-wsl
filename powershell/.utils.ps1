@@ -59,7 +59,9 @@ function Write-TestResult {
 		$StatsStart,
 
 		[Parameter(Mandatory = $true)]
-		$StatsCurrent
+		$StatsCurrent,
+
+		[bool]$IncludeCpu = $true
 	)
 
 	$culture = [System.Globalization.CultureInfo]::InvariantCulture
@@ -69,8 +71,10 @@ function Write-TestResult {
 
 	Write-Output ("files: {0}" -f $Files)
 	Write-Output ("time: {0} sec" -f $time.ToString($Culture))
-	Write-Output ("cpu_user: {0} sec" -f $cpuUser.ToString($Culture))
-	Write-Output ("cpu_sys: {0} sec" -f $cpuSys.ToString($Culture))
+	if ($IncludeCpu) {
+		Write-Output ("cpu_user: {0} sec" -f $cpuUser.ToString($Culture))
+		Write-Output ("cpu_sys: {0} sec" -f $cpuSys.ToString($Culture))
+	}
 }
 
 # Проверяем, что директория существует перед запуском теста.

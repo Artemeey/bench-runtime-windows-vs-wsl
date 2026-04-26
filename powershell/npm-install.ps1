@@ -47,4 +47,5 @@ if ([System.IO.Directory]::Exists($nodeModules)) {
 	}
 }
 
-Write-TestResult -Files $count -StatsStart $statsStart -StatsCurrent $statsCurrent
+# IncludeCpu = false - Не получаем информацию CPU от npm процесса
+Write-TestResult -Files $count -StatsStart $statsStart -StatsCurrent $statsCurrent -IncludeCpu $false
