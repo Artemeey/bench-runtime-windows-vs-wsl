@@ -41,7 +41,8 @@ Typical mixed-scenario examples:
 
 ## Settings
 
-- Default settings are stored in `.env`.
+- Copy template first: `cp .env.example .env`
+- Default settings are stored in `.env.example`.
 - All scripts load `.env` automatically.
 
 ## Run tests
