@@ -14,6 +14,7 @@ USE_CACHE="$2"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 source "$SCRIPT_DIR/.utils.sh"
+load_project_env
 
 # Определяем директорию npm-теста для выбранного режима native/proxy.
 ROOT="$(get_root_path "$PROXY")"

@@ -43,7 +43,6 @@ windows_path_to_wsl_path() {
 # Определяем корневой путь тестов для заданного режима и текущего runtime.
 get_root_path() {
 	local proxy="$1"
-	load_project_env
 
 	# Проверяем обязательные переменные окружения для обоих направлений теста.
 	if [ -z "${TESTS_FS_WINDOWS:-}" ] || [ -z "${TESTS_FS_WSL:-}" ] || [ -z "${WSL_DISTRO:-}" ]; then
