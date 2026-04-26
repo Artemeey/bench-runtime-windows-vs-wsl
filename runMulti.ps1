@@ -1,4 +1,4 @@
-# Запускаем `run.ps1` заданное количество раз для накопления статистики.
+﻿# Запускаем `run.ps1` заданное количество раз для накопления статистики.
 param(
 	[Parameter(Mandatory = $true)]
 	[int]$Count
@@ -16,4 +16,3 @@ for ($i = 1; $i -le $Count; $i++) {
 	Write-Output "🔁 Iteration $i/$Count"
 	& "$PSScriptRoot\run.ps1"
 }
-

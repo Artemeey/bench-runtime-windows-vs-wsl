@@ -1,12 +1,8 @@
-# Запускаем все бенчмарки проекта и сохраняем результаты в CSV.
+﻿# Запускаем все бенчмарки проекта и сохраняем результаты в CSV.
 
 $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
 $OutputEncoding = [System.Text.UTF8Encoding]::new()
-$emojiRuntime = [char]::ConvertFromUtf32(0x1F7EA) # 🟪 Маркер блока runtime.
-$emojiTest = [char]::ConvertFromUtf32(0x1F9EA) # 🧪 Маркер запуска теста.
-$emojiModeNative = [char]::ConvertFromUtf32(0x1F7E2) # 🟢 Маркер режима native.
-$emojiModeProxy = [char]::ConvertFromUtf32(0x1F7E3) # 🟣 Маркер режима proxy.
 
 $projectRoot = $PSScriptRoot
 $powershellTestsDir = Join-Path $projectRoot "powershell"
@@ -29,7 +25,7 @@ function Run-Test {
 
 	# Печатаем короткий заголовок сценария, чтобы тесты не сливались в логе.
 	Write-Output ""
-	Write-Output "$emojiTest $name | cross_fs=$crossFs | cache=$cache | args=$argsText"
+	Write-Output "🧪 $name | cross_fs=$crossFs | cache=$cache | args=$argsText"
 
 	$output = & $script
 	$output | Write-Output
@@ -66,7 +62,7 @@ if (Test-Path -LiteralPath $resultsTxtPath) {
 }
 
 $reportLines = @(
-	"$emojiRuntime runtime: powershell"
+	"🟦 runtime: powershell"
 	"os_windows: $osVersion"
 	"powershell: $($PSVersionTable.PSVersion)"
 	"wsl: $wslVersion $($env:WSL_DISTRO)"
@@ -85,7 +81,7 @@ Write-Output ""
 Write-Output ""
 
 # Сначала запускаем все native-сценарии (cross_fs=false).
-Write-Output "$emojiModeNative Running native mode (cross_fs=false)"
+Write-Output "🟢 Running native mode (cross_fs=false)"
 Run-Test "npm-install" "false" "true" { & "$powershellTestsDir\npm-install.ps1" $false $true } "proxy=false,use_cache=true"
 Run-Test "npm-install" "false" "false" { & "$powershellTestsDir\npm-install.ps1" $false $false } "proxy=false,use_cache=false"
 Run-Test "files-find" "false" "none" { & "$powershellTestsDir\files-find.ps1" $false } "proxy=false"
@@ -94,7 +90,7 @@ Run-Test "files-create-delete" "false" "none" { & "$powershellTestsDir\files-cre
 Write-Output ""
 
 # Затем запускаем все proxy-сценарии (cross_fs=true).
-Write-Output "$emojiModeProxy Running proxy mode (cross_fs=true)"
+Write-Output "🟣 Running proxy mode (cross_fs=true)"
 Run-Test "npm-install" "true" "true" { & "$powershellTestsDir\npm-install.ps1" $true $true } "proxy=true,use_cache=true"
 Run-Test "npm-install" "true" "false" { & "$powershellTestsDir\npm-install.ps1" $true $false } "proxy=true,use_cache=false"
 Run-Test "files-find" "true" "none" { & "$powershellTestsDir\files-find.ps1" $true } "proxy=true"
@@ -104,5 +100,5 @@ Run-Test "files-create-delete" "true" "none" { & "$powershellTestsDir\files-crea
 $resultsDirNormalized = (Resolve-Path -LiteralPath $resultsDir).Path
 $resultsUri = [System.Uri]::new($resultsDirNormalized)
 Write-Output ""
-Write-Output "Results directory: $resultsDirNormalized"
-Write-Output "Results link: $($resultsUri.AbsoluteUri)"
+Write-Output "📁 Results directory: $resultsDirNormalized"
+Write-Output "🔗 Results link: $($resultsUri.AbsoluteUri)"
