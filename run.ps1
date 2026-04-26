@@ -41,8 +41,8 @@ function Run-Test {
 	"powershell,$name,$crossFs,$cache,$($res.files),$($res.time),$($res.cpu_user),$($res.cpu_sys)" | Add-Content $csv
 }
 
-# Загружаем переменные окружения из `.env` через общий скрипт env.ps1.
-. (Join-Path $projectRoot "env.ps1")
+. "$powershellTestsDir\.utils.ps1"
+Import-ProjectEnv -ProjectRoot $projectRoot
 
 $nodeVersion = ((node -v 2>$null) -join '').Trim()
 $npmVersion = ((npm -v 2>$null) -join '').Trim()

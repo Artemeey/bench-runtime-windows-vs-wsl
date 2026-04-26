@@ -20,11 +20,8 @@ Benchmark suite for comparing Windows and WSL performance in real development sc
 
 ## Environment setup
 
-Default values are stored in `.env`.
-
-- `run.sh` and `run.ps1` load `.env` automatically.
-- For a single Bash script, pass variables from `.env` inline.
-- Use `.\env.ps1` to run a single PowerShell script with `.env`.
+- Default values are stored in `.env`.
+- All scripts load `.env` automatically.
 
 ## Run
 
@@ -53,7 +50,7 @@ bash/npm-install.sh false true
 PowerShell:
 
 ```powershell
-.\env.ps1 .\powershell\npm-install.ps1 $false $true
+.\powershell\npm-install.ps1 $false $true
 ```
 
 ## Reading results

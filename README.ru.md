@@ -20,11 +20,8 @@
 
 ## Подготовка окружения
 
-Значения по умолчанию лежат в `.env`.
-
-- `run.sh` и `run.ps1` сами подхватывают `.env`.
-- Для запуска одного Bash-скрипта передайте переменные из `.env` прямо в команду.
-- Для запуска одного PowerShell-скрипта используйте `.\env.ps1`.
+- Значения по умолчанию лежат в `.env`.
+- Все скрипты сами подхватывают `.env`.
 
 ## Запуск
 
@@ -53,7 +50,7 @@ bash/npm-install.sh false true
 PowerShell:
 
 ```powershell
-.\env.ps1 .\powershell\npm-install.ps1 $false $true
+.\powershell\npm-install.ps1 $false $true
 ```
 
 ## Как читать результаты
