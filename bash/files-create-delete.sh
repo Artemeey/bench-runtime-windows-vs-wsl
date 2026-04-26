@@ -24,7 +24,7 @@ fi
 FILE_COUNT=10000
 TEST_DIR="$ROOT/files-create-delete-$(date +%s%N)"
 
-mkdir -p "$TEST_DIR"
+mkdir "$TEST_DIR"
 
 TIMEFORMAT="%3R %3U %3S"
 TIME_RESULT="$({ time {
