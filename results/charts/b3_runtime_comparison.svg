@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="760" viewBox="0 0 1500 760">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="750" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#111827"><tspan x="750" dy="0">B3. Сравнение runtime: bash vs powershell</tspan></text>
+<text x="750" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#4b5563"><tspan x="750" dy="0">Для npm-install взят cache=false; для файловых тестов cache=none</tspan></text>
+<line x1="96" y1="610.0" x2="1464" y2="610.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="82" y="615" text-anchor="end" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#4b5563"><tspan x="82" dy="0">0.000</tspan></text>
+<line x1="96" y1="506.4" x2="1464" y2="506.4" stroke="#e5e7eb" stroke-width="1"/>
+<text x="82" y="511.4" text-anchor="end" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#4b5563"><tspan x="82" dy="0">4.00</tspan></text>
+<line x1="96" y1="402.8" x2="1464" y2="402.8" stroke="#e5e7eb" stroke-width="1"/>
+<text x="82" y="407.8" text-anchor="end" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#4b5563"><tspan x="82" dy="0">8.00</tspan></text>
+<line x1="96" y1="299.2" x2="1464" y2="299.2" stroke="#e5e7eb" stroke-width="1"/>
+<text x="82" y="304.2" text-anchor="end" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#4b5563"><tspan x="82" dy="0">12.0</tspan></text>
+<line x1="96" y1="195.6" x2="1464" y2="195.6" stroke="#e5e7eb" stroke-width="1"/>
+<text x="82" y="200.60000000000002" text-anchor="end" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#4b5563"><tspan x="82" dy="0">16.0</tspan></text>
+<line x1="96" y1="92.0" x2="1464" y2="92.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="82" y="97" text-anchor="end" font-family="Arial, sans-serif" font-size="12" font-weight="400" fill="#4b5563"><tspan x="82" dy="0">20.0</tspan></text>
+<line x1="96" y1="92" x2="96" y2="610" stroke="#9ca3af"/>
+<line x1="96" y1="610" x2="1464" y2="610" stroke="#9ca3af"/>
+<text x="24" y="351" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#374151" transform="rotate(-90 24 351)"><tspan x="24" dy="0">секунды</tspan></text>
+<rect x="96.0" y="548.5" width="95.0" height="61.5" rx="5" fill="#2563eb"/>
+<text x="143.5" y="540.5393" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="143.5" dy="0">2.37 с</tspan></text>
+<rect x="199.0" y="544.0" width="95.0" height="66.0" rx="5" fill="#7c3aed"/>
+<text x="246.5" y="536.02995719" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="246.5" dy="0">2.55 с</tspan></text>
+<text x="195" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#111827"><tspan x="195" dy="0">npm install</tspan><tspan x="195" dy="17">native</tspan></text>
+<rect x="330.0" y="364.1" width="95.0" height="245.9" rx="5" fill="#2563eb"/>
+<text x="377.5" y="356.07949999999994" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="377.5" dy="0">9.50 с</tspan></text>
+<rect x="433.0" y="341.4" width="95.0" height="268.6" rx="5" fill="#7c3aed"/>
+<text x="480.5" y="333.41536312" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="480.5" dy="0">10.4 с</tspan></text>
+<text x="429" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#111827"><tspan x="429" dy="0">npm install</tspan><tspan x="429" dy="17">proxy</tspan></text>
+<rect x="564.0" y="609.0" width="95.0" height="1.0" rx="5" fill="#2563eb"/>
+<text x="611.5" y="601.00285" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="611.5" dy="0">0.039 с</tspan></text>
+<rect x="667.0" y="607.9" width="95.0" height="2.1" rx="5" fill="#7c3aed"/>
+<text x="714.5" y="599.9349671" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="714.5" dy="0">0.080 с</tspan></text>
+<text x="663" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#111827"><tspan x="663" dy="0">поиск файлов</tspan><tspan x="663" dy="17">native</tspan></text>
+<rect x="798.0" y="591.8" width="95.0" height="18.2" rx="5" fill="#2563eb"/>
+<text x="845.5" y="583.75345" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="845.5" dy="0">0.704 с</tspan></text>
+<rect x="901.0" y="601.0" width="95.0" height="9.0" rx="5" fill="#7c3aed"/>
+<text x="948.5" y="592.97379561" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="948.5" dy="0">0.349 с</tspan></text>
+<text x="897" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#111827"><tspan x="897" dy="0">поиск файлов</tspan><tspan x="897" dy="17">proxy</tspan></text>
+<rect x="1032.0" y="604.0" width="95.0" height="6.0" rx="5" fill="#2563eb"/>
+<text x="1079.5" y="595.9912" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="1079.5" dy="0">0.232 с</tspan></text>
+<rect x="1135.0" y="600.8" width="95.0" height="9.2" rx="5" fill="#7c3aed"/>
+<text x="1182.5" y="592.825951935" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="1182.5" dy="0">0.354 с</tspan></text>
+<text x="1131" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#111827"><tspan x="1131" dy="0">создание/удаление</tspan><tspan x="1131" dy="17">native</tspan></text>
+<rect x="1266.0" y="447.8" width="95.0" height="162.2" rx="5" fill="#2563eb"/>
+<text x="1313.5" y="439.77535" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="1313.5" dy="0">6.26 с</tspan></text>
+<rect x="1369.0" y="534.4" width="95.0" height="75.6" rx="5" fill="#7c3aed"/>
+<text x="1416.5" y="526.38118414" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#111827"><tspan x="1416.5" dy="0">2.92 с</tspan></text>
+<text x="1365" y="642" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#111827"><tspan x="1365" dy="0">создание/удаление</tspan><tspan x="1365" dy="17">proxy</tspan></text>
+<rect x="620" y="716" width="14" height="14" rx="3" fill="#2563eb"/>
+<text x="642" y="728" text-anchor="start" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151"><tspan x="642" dy="0">bash</tspan></text>
+<rect x="750" y="716" width="14" height="14" rx="3" fill="#7c3aed"/>
+<text x="772" y="728" text-anchor="start" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#374151"><tspan x="772" dy="0">powershell</tspan></text>
+</svg>
