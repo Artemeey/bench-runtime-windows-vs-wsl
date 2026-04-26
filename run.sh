@@ -75,7 +75,6 @@ unix_os="$(uname -srmo 2>/dev/null || true)"
 report_block="$({
 	[ -s "$RESULTS_TXT" ] && echo
 	echo "🟦 runtime: bash"
-	echo "runtime: bash"
 	echo "os_unix: $unix_os"
 	echo "os_windows: $windows_os"
 	echo "bash: ${BASH_VERSION:-unknown}"

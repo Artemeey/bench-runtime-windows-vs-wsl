@@ -63,7 +63,6 @@ if (Test-Path -LiteralPath $resultsTxt) {
 
 $reportLines = @(
 	"$emojiRuntime runtime: powershell"
-	"runtime: powershell"
 	"os_windows: $osVersion"
 	"powershell: $($PSVersionTable.PSVersion)"
 	"node: $nodeVersion"
