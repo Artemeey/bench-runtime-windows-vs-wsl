@@ -48,7 +48,7 @@ Windows-файловой системы (`C:\` → `/mnt/c`) приводит к
 
 ## Запуск тестов
 
-Результаты тестов сохраняются в `results/results.csv` и `results.txt`.
+Результаты тестов сохраняются в `results/results.csv` и `results/results.txt`.
 
 Файлы не очищаются автоматически, чтобы обеспечить возможность многократных запусков и накопления статистики для
 последующего анализа.
@@ -98,11 +98,11 @@ bash/npm-install.sh false true # пример запуска теста npm-inst
 
 ### Внутри одного окружения
 
-| Источни запуска | Сравнение                                                     | Что показывает                                                                       |
-|-----------------|---------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| Windows         | PowerShell `native` vs PowerShell `proxy`                     | Производительность PowerShell при доступе к файлам WSL через границу Windows ↔ WSL   |
-| Windows         | MSYS2 Bash (Windows) `native` vs MSYS2 Bash (Windows) `proxy` | Производительность MSYS2 Bash (Windows) при доступе к файлам WSL                     |
-| WSL2            | WSL Bash `native` vs WSL Bash `proxy`                         | Производительность WSL Bash при доступе к файлам Windows через границу Windows ↔ WSL |
+| Источник запуска | Сравнение                                                     | Что показывает                                                                       |
+|------------------|---------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| Windows          | PowerShell `native` vs PowerShell `proxy`                     | Производительность PowerShell при доступе к файлам WSL через границу Windows ↔ WSL   |
+| Windows          | MSYS2 Bash (Windows) `native` vs MSYS2 Bash (Windows) `proxy` | Производительность MSYS2 Bash (Windows) при доступе к файлам WSL                     |
+| WSL2             | WSL Bash `native` vs WSL Bash `proxy`                         | Производительность WSL Bash при доступе к файлам Windows через границу Windows ↔ WSL |
 
 ### Между окружениями
 
