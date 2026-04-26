@@ -61,11 +61,6 @@ Full test cycle:
 - Windows: `bash ./run.sh`, runs tests on Windows filesystem, then on WSL
 - WSL: `./run.sh`, runs tests on WSL filesystem, then on Windows
 
-Run tests multiple times:
-
-- Bash/WSL/Git Bash: `./runMulti.sh 10`
-- PowerShell: `.\runMulti.ps1 -Count 10`
-
 PowerShell:
 
 ```powershell
@@ -79,6 +74,11 @@ sudo chmod +x *.sh bash/*.sh # setup execute permissions once
 
 ./run.sh
 ```
+
+Run tests multiple times:
+
+- PowerShell: `.\runMulti.ps1 -Count 10`
+- Bash: `./runMulti.sh 10`
 
 ## Reading results
 

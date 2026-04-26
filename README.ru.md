@@ -62,11 +62,6 @@ Windows-файловой системы (`C:\` → `/mnt/c`) приводит к
 - Windows: `bash ./run.sh`, запустит тесты на файловой системе Windows, потом на WSL
 - WSL: `./run.sh`, запустит тесты на файловой системе WSL, потом на Windows
 
-Многократный запуск тестов:
-
-- Bash/WSL/Git Bash: `./runMulti.sh 10`
-- PowerShell: `.\runMulti.ps1 -Count 10`
-
 PowerShell:
 
 ```powershell
@@ -81,6 +76,11 @@ sudo chmod +x *.sh bash/*.sh # настроить доступ один раз
 
 ./run.sh
 ```
+
+Многократный запуск тестов:
+
+- PowerShell: `.\runMulti.ps1 -Count 10`
+- Bash: `./runMulti.sh 10`
 
 ## Как читать результаты
 
