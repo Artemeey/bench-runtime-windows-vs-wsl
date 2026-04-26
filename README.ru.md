@@ -30,6 +30,7 @@ Windows-файловой системы (`C:\` → `/mnt/c`) приводит к
 
 - Наборы тестов Bash и PowerShell используют максимально эквивалентные операции для своих runtime и системных API.
 - В Windows используется MSYS2 Bash, в WSL используется нативный WSL Bash.
+- Тесты дополнительно запускаются на PowerShell, чтобы сравнивать производительность PowerShell / Bash, без влияния WSL
 - Тесты запускаются на свободной системе
 - Тесты запускаются по очереди, параллельный запуск запрещен
 - Тесты можно запустить несколько раз, все результаты будут сохраняться в CSV
@@ -52,6 +53,12 @@ Windows-файловой системы (`C:\` → `/mnt/c`) приводит к
 Файлы не очищаются автоматически, чтобы обеспечить возможность многократных запусков и накопления статистики для
 последующего анализа.
 
+Полный цикл запуска тестов:
+
+- Windows: `powershell .\run.ps1`, запустит тесты на файловой системе Windows, потом на WSL
+- Windows: `bash ./run.sh`, запустит тесты на файловой системе Windows, потом на WSL
+- WSL: `./run.sh`, запустит тесты на файловой системе WSL, потом на Windows
+
 PowerShell:
 
 ```powershell
@@ -62,8 +69,7 @@ Bash:
 
 ```bash
 # настроить доступ один раз
-sudo chmod +x *.sh
-sudo chmod +x bash/*.sh
+sudo chmod +x *.sh bash/*.sh # настроить доступ один раз
 
 ./run.sh
 ```
@@ -73,16 +79,19 @@ sudo chmod +x bash/*.sh
 PowerShell:
 
 ```powershell
-.\powershell\npm-install.ps1 $false $true
+.\powershell\setup-fs.ps1 # перед первым запуском
+
+.\powershell\npm-install.ps1 $false $true # пример запуска теста npm-install
 ```
 
 Bash:
 
 ```bash
-# настроить доступ один раз
-sudo chmod +x *.sh bash/*.sh
+sudo chmod +x *.sh bash/*.sh # настроить доступ один раз
 
-bash/npm-install.sh false true
+bash/setup-fs.sh # перед первым запуском
+
+bash/npm-install.sh false true # пример запуска теста npm-install
 ```
 
 ## Как читать результаты

@@ -31,5 +31,5 @@ for proxy in false true; do
 	cp "$PROJECT_ROOT/package.json" "$npm_dir/package.json"
 	cp "$PROJECT_ROOT/package-lock.json" "$npm_dir/package-lock.json"
 
-	echo "selected dir ($mode_name): $root"
+	echo "init dir ($mode_name): $root"
 done

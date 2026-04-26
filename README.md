@@ -22,14 +22,15 @@ Typical mixed-scenario examples:
 
 ## Tests
 
-- `files-find` — recursive file traversal
-- `files-create-delete` — create and delete 10,000 small files
 - `npm-install` — install npm dependencies from `package-lock.json` with and without cache
+- `files-find` — recursive file traversal, must run after `npm-install`
+- `files-create-delete` — create and delete 10,000 small files
 
 ## Test correctness
 
 - Bash and PowerShell test suites use the most equivalent operations for their own runtimes and system APIs.
 - Windows uses MSYS2 Bash, while WSL uses native WSL Bash.
+- Tests are also run in PowerShell to compare PowerShell / Bash performance without WSL impact.
 - Tests are run on an idle system.
 - Tests run sequentially; parallel run is not allowed.
 - Tests can be run multiple times; all results are preserved in CSV.
@@ -51,6 +52,12 @@ Test results are written to `results/results.csv` and `results.txt`.
 
 Files are not cleared automatically, so you can run tests multiple times and accumulate statistics for further analysis.
 
+Full test cycle:
+
+- Windows: `powershell .\run.ps1`, runs tests on Windows filesystem, then on WSL
+- Windows: `bash ./run.sh`, runs tests on Windows filesystem, then on WSL
+- WSL: `./run.sh`, runs tests on WSL filesystem, then on Windows
+
 PowerShell:
 
 ```powershell
@@ -60,8 +67,7 @@ PowerShell:
 Bash:
 
 ```bash
-# setup execute permissions once
-sudo chmod +x *.sh bash/*.sh
+sudo chmod +x *.sh bash/*.sh # setup execute permissions once
 
 ./run.sh
 ```
@@ -71,17 +77,19 @@ sudo chmod +x *.sh bash/*.sh
 PowerShell:
 
 ```powershell
-.\powershell\npm-install.ps1 $false $true
+.\powershell\setup-fs.ps1 # before first run
+
+.\powershell\npm-install.ps1 $false $true # npm-install example
 ```
 
 Bash:
 
 ```bash
-# setup execute permissions once
-sudo chmod +x *.sh
-sudo chmod +x bash/*.sh
+sudo chmod +x *.sh bash/*.sh # setup execute permissions once
 
-bash/npm-install.sh false true
+bash/setup-fs.sh # before first run
+
+bash/npm-install.sh false true # npm-install example
 ```
 
 ## Reading results

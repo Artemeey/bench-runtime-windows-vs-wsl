@@ -20,5 +20,5 @@ foreach ($proxy in @($false, $true)) {
 	Copy-Item -LiteralPath $packageJson -Destination (Join-Path $npmDir "package.json") -Force
 	Copy-Item -LiteralPath $packageLockJson -Destination (Join-Path $npmDir "package-lock.json") -Force
 
-	Write-Output ("selected dir (${modeName}): {0}" -f $root)
+	Write-Output ("init dir (${modeName}): {0}" -f $root)
 }
