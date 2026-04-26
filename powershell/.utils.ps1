@@ -6,6 +6,12 @@ function Import-ProjectEnv {
 	)
 
 	$envPath = Join-Path $ProjectRoot ".env"
+	$envExamplePath = Join-Path $ProjectRoot ".env.example"
+
+	# Если `.env` отсутствует, создаём его из шаблона.
+	if (-not (Test-Path -LiteralPath $envPath)) {
+		Copy-Item -LiteralPath $envExamplePath -Destination $envPath
+	}
 
 	Get-Content -Encoding UTF8 -LiteralPath $envPath |
 		Where-Object { $_ -match '^\s*[^#].+=' } |

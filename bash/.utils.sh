@@ -4,9 +4,16 @@
 load_project_env() {
 	local script_dir
 	script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+	local env_path="$script_dir/../.env"
+	local env_example_path="$script_dir/../.env.example"
+
+	# Если `.env` отсутствует, создаём его из шаблона.
+	if [ ! -f "$env_path" ]; then
+		cp "$env_example_path" "$env_path"
+	fi
 
 	set -a
-	. "$script_dir/../.env"
+	source "$script_dir/../.env"
 	set +a
 }
 
