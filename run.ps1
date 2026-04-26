@@ -55,6 +55,8 @@ $wslVersionRaw = ((wsl --version 2>$null | Select-Object -First 1) -join '').Tri
 $wslVersionClean = ($wslVersionRaw -replace "`0", "")
 $wslVersion = [regex]::Match($wslVersionClean, '\d+(\.\d+)+').Value
 $osVersion = ((Get-CimInstance Win32_OperatingSystem 2>$null | Select-Object -First 1 | ForEach-Object { "$($_.Caption) $($_.Version)" }) -join '').Trim()
+$windowsFsType = ((Get-Volume -DriveLetter C -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FileSystem) -join '').Trim()
+$wslFsType = ((wsl -d $env:WSL_DISTRO bash -lc "df -T '$($env:TESTS_FS_WSL)' 2>/dev/null | sed -n '2p' | tr -s ' ' | cut -d' ' -f2" 2>$null) -join '').Trim()
 
 # Сохраняем версии инструментов и параметры запуска в текстовый отчёт.
 if (Test-Path -LiteralPath $resultsTxt) {
@@ -65,12 +67,11 @@ $reportLines = @(
 	"$emojiRuntime runtime: powershell"
 	"os_windows: $osVersion"
 	"powershell: $($PSVersionTable.PSVersion)"
+	"wsl: $wslVersion $($env:WSL_DISTRO)"
+	"fs_windows: $($env:TESTS_FS_WINDOWS) -> $(if ($windowsFsType) { $windowsFsType } else { 'unknown' })"
+	"fs_wsl: $($env:TESTS_FS_WSL) -> $(if ($wslFsType) { $wslFsType } else { 'unknown' })"
 	"node: $nodeVersion"
 	"npm: $npmVersion"
-	"wsl: $wslVersion"
-	"TESTS_FS_WINDOWS: $($env:TESTS_FS_WINDOWS)"
-	"TESTS_FS_WSL: $($env:TESTS_FS_WSL)"
-	"WSL_DISTRO: $($env:WSL_DISTRO)"
 )
 
 $reportLines | Write-Output

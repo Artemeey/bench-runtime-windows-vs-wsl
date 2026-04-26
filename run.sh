@@ -72,18 +72,41 @@ wsl_version="$(echo "$wsl_version_raw" | grep -Eo '[0-9]+(\.[0-9]+)+' | head -n 
 windows_os="$(uname -sr 2>/dev/null | sed -E 's/^.*(NT-[0-9.]+).*$/Windows \1/' || true)"
 unix_os="$(uname -srmo 2>/dev/null || true)"
 
+# Определяем тип файловой системы по локальному пути.
+get_fs_type_local() {
+	local path="$1"
+	df -T "$path" 2>/dev/null | awk 'NR==2 {print $2}'
+}
+
+# Определяем тип файловой системы по пути внутри WSL.
+get_fs_type_wsl() {
+	local path="$1"
+	wsl -d "$WSL_DISTRO" bash -lc "df -T '$path' 2>/dev/null | awk 'NR==2 {print \\$2}'" 2>/dev/null
+}
+
+windows_path_for_bash="$(windows_path_to_git_bash_path "$TESTS_FS_WINDOWS")"
+windows_path_for_wsl="$(windows_path_to_wsl_path "$TESTS_FS_WINDOWS")"
+wsl_path_for_wsl="$TESTS_FS_WSL"
+
+if [ "${MSYSTEM:-}" != "" ]; then
+	fs_windows="$(get_fs_type_local "$windows_path_for_bash")"
+	fs_wsl="$(get_fs_type_wsl "$wsl_path_for_wsl")"
+else
+	fs_windows="$(get_fs_type_local "$windows_path_for_wsl")"
+	fs_wsl="$(get_fs_type_local "$wsl_path_for_wsl")"
+fi
+
 report_block="$({
 	[ -s "$RESULTS_TXT" ] && echo
 	echo "🟦 runtime: bash"
 	echo "os_unix: $unix_os"
 	echo "os_windows: $windows_os"
+	echo "wsl: $wsl_version (${WSL_DISTRO:-})"
+	echo "fs_windows: ${TESTS_FS_WINDOWS} -> ${fs_windows:-unknown}"
+	echo "fs_wsl: ${TESTS_FS_WSL} -> ${fs_wsl:-unknown}"
 	echo "bash: ${BASH_VERSION:-unknown}"
 	echo "node: $(node -v 2>/dev/null || true)"
 	echo "npm: $(npm -v 2>/dev/null || true)"
-	echo "wsl: $wsl_version"
-	echo "TESTS_FS_WINDOWS: ${TESTS_FS_WINDOWS:-}"
-	echo "TESTS_FS_WSL: ${TESTS_FS_WSL:-}"
-	echo "WSL_DISTRO: ${WSL_DISTRO:-}"
 })"
 
 echo "$report_block" | tee -a "$RESULTS_TXT"
