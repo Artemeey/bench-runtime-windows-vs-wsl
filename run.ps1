@@ -3,6 +3,9 @@
 $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
 $OutputEncoding = [System.Text.UTF8Encoding]::new()
+$emojiRuntime = [char]::ConvertFromUtf32(0x1F7EA) # 🟪 Маркер блока runtime.
+$emojiTest = [char]::ConvertFromUtf32(0x1F9EA) # 🧪 Маркер запуска теста.
+$emojiSettings = [char]::ConvertFromUtf32(0x2699) + [char]::ConvertFromUtf32(0xFE0F) # ⚙️ Маркер параметров окружения.
 
 $projectRoot = $PSScriptRoot
 $powershellTestsDir = Join-Path $projectRoot "powershell"
@@ -33,9 +36,10 @@ function Run-Test {
 
 	# Печатаем короткий заголовок сценария, чтобы тесты не сливались в логе.
 	Write-Output ""
-	Write-Output "🧪 $name | cross_fs=$crossFs | cache=$cache | args=$argsText"
+	Write-Output "$emojiTest $name | cross_fs=$crossFs | cache=$cache | args=$argsText"
 
 	$output = & $script
+	$output | Write-Output
 	$res = Parse-Result $output
 
 	"powershell,$name,$crossFs,$cache,$($res.files),$($res.time),$($res.cpu_user),$($res.cpu_sys)" | Add-Content $csv
@@ -57,7 +61,7 @@ if (Test-Path -LiteralPath $resultsTxt) {
 }
 
 $reportLines = @(
-	"🟪 runtime: powershell"
+	"$emojiRuntime runtime: powershell"
 	"runtime: powershell"
 	"os_windows: $osVersion"
 	"powershell: $($PSVersionTable.PSVersion)"
@@ -75,7 +79,7 @@ $reportLines | Add-Content -Path $resultsTxt -Encoding utf8
 & "$powershellTestsDir\setup-fs.ps1"
 
 # Печатаем параметры окружения один раз на весь прогон.
-Write-Output "⚙️ runtime=powershell | TESTS_FS_WINDOWS=$($env:TESTS_FS_WINDOWS) | TESTS_FS_WSL=$($env:TESTS_FS_WSL) | WSL_DISTRO=$($env:WSL_DISTRO)"
+Write-Output "$emojiSettings runtime=powershell | TESTS_FS_WINDOWS=$($env:TESTS_FS_WINDOWS) | TESTS_FS_WSL=$($env:TESTS_FS_WSL) | WSL_DISTRO=$($env:WSL_DISTRO)"
 
 # Сначала запускаем все native-сценарии (cross_fs=false).
 Run-Test "files-find" "false" "none" { & "$powershellTestsDir\files-find.ps1" $false } "proxy=false"
