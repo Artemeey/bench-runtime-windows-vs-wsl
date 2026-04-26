@@ -30,7 +30,7 @@ if (-not $UseCache) {
 # Запускаем npm ci из директории теста.
 Push-Location $npmDir
 try {
-	npm ci *> $null
+	npm ci --ignore-scripts *> $null
 } finally {
 	Pop-Location
 }
