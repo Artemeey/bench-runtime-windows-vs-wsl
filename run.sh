@@ -7,16 +7,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$SCRIPT_DIR"
 BASH_TESTS_DIR="$SCRIPT_DIR/bash"
-RESULTS_DIR="$PROJECT_ROOT/results"
 source "$BASH_TESTS_DIR/.utils.sh"
-
-mkdir -p "$RESULTS_DIR"
-CSV="$RESULTS_DIR/results.csv"
-RESULTS_TXT="$RESULTS_DIR/results.txt"
-
-if [ ! -f "$CSV" ]; then
-	echo "runtime,test,cross_fs,cache,files,time,cpu_user,cpu_sys" > "$CSV"
-fi
 
 # Приводим вывод отдельного теста к формату CSV-полей.
 parse_result() {
@@ -60,11 +51,28 @@ run_test() {
 	local parsed
 	parsed="$(parse_result "$output")"
 
-	echo "bash,$name,$cross_fs,$cache,$parsed" >> "$CSV"
+	echo "bash,$name,$cross_fs,$cache,$parsed" >> "$RESULTS_CSV_PATH"
 }
 
 # Подготавливаем тестовые директории перед запуском всех бенчмарков.
 load_project_env
+
+# Формируем директорию результатов внутри TESTS_FS_WINDOWS, чтобы все прогоны писались в одно место.
+RESULTS_DIR_WINDOWS="${TESTS_FS_WINDOWS%/}/results"
+
+if [ "${MSYSTEM:-}" != "" ]; then
+	RESULTS_DIR_PATH="$(windows_path_to_git_bash_path "$RESULTS_DIR_WINDOWS")"
+else
+	RESULTS_DIR_PATH="$(windows_path_to_wsl_path "$RESULTS_DIR_WINDOWS")"
+fi
+
+mkdir -p "$RESULTS_DIR_PATH"
+RESULTS_CSV_PATH="$RESULTS_DIR_PATH/results.csv"
+RESULTS_TXT_PATH="$RESULTS_DIR_PATH/results.txt"
+
+if [ ! -f "$RESULTS_CSV_PATH" ]; then
+	echo "runtime,test,cross_fs,cache,files,time,cpu_user,cpu_sys" > "$RESULTS_CSV_PATH"
+fi
 
 # Сохраняем версии инструментов и параметры запуска в текстовый отчёт.
 wsl_version_raw="$(wsl --version 2>/dev/null | tr -d '\000' | sed -E 's/[^[:print:]]//g' | head -n 1 || true)"
@@ -97,7 +105,7 @@ else
 fi
 
 report_block="$({
-	[ -s "$RESULTS_TXT" ] && echo
+	[ -s "$RESULTS_TXT_PATH" ] && echo
 	echo "🟦 runtime: bash"
 	echo "os_unix: $unix_os"
 	echo "os_windows: $windows_os"
@@ -109,7 +117,7 @@ report_block="$({
 	echo "npm: $(npm -v 2>/dev/null || true)"
 })"
 
-echo "$report_block" | tee -a "$RESULTS_TXT"
+echo "$report_block" | tee -a "$RESULTS_TXT_PATH"
 
 echo "";
 "$BASH_TESTS_DIR/setup-fs.sh"
@@ -129,3 +137,17 @@ run_test "npm-install" "true" "true" "$BASH_TESTS_DIR/npm-install.sh" -- true tr
 run_test "npm-install" "true" "false" "$BASH_TESTS_DIR/npm-install.sh" -- true false
 run_test "files-find" "true" "none" "$BASH_TESTS_DIR/files-find.sh" -- true
 run_test "files-create-delete" "true" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- true
+
+# Подготавливаем команду открытия папки результатов в Проводнике.
+if [ "${MSYSTEM:-}" != "" ]; then
+	RESULTS_DIR_FOR_EXPLORER="${RESULTS_DIR_WINDOWS//\//\\}"
+else
+	RESULTS_DIR_FOR_EXPLORER="$(wslpath -w "$RESULTS_DIR_PATH")"
+fi
+
+RESULTS_URI_PATH="${RESULTS_DIR_FOR_EXPLORER//\\//}"
+RESULTS_LINK="file:///$RESULTS_URI_PATH"
+
+echo
+echo "📁 Results directory: $RESULTS_DIR_PATH"
+echo "🔗 Results link: $RESULTS_LINK"

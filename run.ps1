@@ -10,14 +10,6 @@ $emojiModeProxy = [char]::ConvertFromUtf32(0x1F7E3) # 🟣 Маркер режи
 
 $projectRoot = $PSScriptRoot
 $powershellTestsDir = Join-Path $projectRoot "powershell"
-$resultsDir = Join-Path $projectRoot "results"
-New-Item -ItemType Directory -Force -Path $resultsDir | Out-Null
-
-$csv = Join-Path $resultsDir "results.csv"
-$resultsTxt = Join-Path $resultsDir "results.txt"
-if (-not (Test-Path -LiteralPath $csv)) {
-	"runtime,test,cross_fs,cache,files,time,cpu_user,cpu_sys" | Out-File $csv -Encoding utf8
-}
 
 # Приводим вывод отдельного теста к формату CSV-полей.
 function Parse-Result {
@@ -43,11 +35,21 @@ function Run-Test {
 	$output | Write-Output
 	$res = Parse-Result $output
 
-	"powershell,$name,$crossFs,$cache,$($res.files),$($res.time),$($res.cpu_user),$($res.cpu_sys)" | Add-Content $csv
+	"powershell,$name,$crossFs,$cache,$($res.files),$($res.time),$($res.cpu_user),$($res.cpu_sys)" | Add-Content $resultsCsvPath
 }
 
 . "$powershellTestsDir\.utils.ps1"
 Import-ProjectEnv -ProjectRoot $projectRoot
+
+# Формируем директорию результатов внутри TESTS_FS_WINDOWS, чтобы все прогоны писались в одно место.
+$resultsDir = Join-Path $env:TESTS_FS_WINDOWS "results"
+New-Item -ItemType Directory -Force -Path $resultsDir | Out-Null
+
+$resultsCsvPath = Join-Path $resultsDir "results.csv"
+$resultsTxtPath = Join-Path $resultsDir "results.txt"
+if (-not (Test-Path -LiteralPath $resultsCsvPath)) {
+	"runtime,test,cross_fs,cache,files,time,cpu_user,cpu_sys" | Out-File $resultsCsvPath -Encoding utf8
+}
 
 $nodeVersion = ((node -v 2>$null) -join '').Trim()
 $npmVersion = ((npm -v 2>$null) -join '').Trim()
@@ -59,8 +61,8 @@ $windowsFsType = ((Get-Volume -DriveLetter C -ErrorAction SilentlyContinue | Sel
 $wslFsType = ((wsl -d $env:WSL_DISTRO bash -lc "df -T '$($env:TESTS_FS_WSL)' 2>/dev/null | sed -n '2p' | tr -s ' ' | cut -d' ' -f2" 2>$null) -join '').Trim()
 
 # Сохраняем версии инструментов и параметры запуска в текстовый отчёт.
-if (Test-Path -LiteralPath $resultsTxt) {
-	Add-Content -Path $resultsTxt -Value ""
+if (Test-Path -LiteralPath $resultsTxtPath) {
+	Add-Content -Path $resultsTxtPath -Value ""
 }
 
 $reportLines = @(
@@ -75,7 +77,7 @@ $reportLines = @(
 )
 
 $reportLines | Write-Output
-$reportLines | Add-Content -Path $resultsTxt -Encoding utf8
+$reportLines | Add-Content -Path $resultsTxtPath -Encoding utf8
 
 Write-Output ""
 & "$powershellTestsDir\setup-fs.ps1"
@@ -95,3 +97,10 @@ Run-Test "npm-install" "true" "true" { & "$powershellTestsDir\npm-install.ps1" $
 Run-Test "npm-install" "true" "false" { & "$powershellTestsDir\npm-install.ps1" $true $false } "proxy=true,use_cache=false"
 Run-Test "files-find" "true" "none" { & "$powershellTestsDir\files-find.ps1" $true } "proxy=true"
 Run-Test "files-create-delete" "true" "none" { & "$powershellTestsDir\files-create-delete.ps1" $true } "proxy=true"
+
+# Показываем путь и готовую ссылку, чтобы пользователь сразу открыл папку результатов.
+$resultsDirNormalized = (Resolve-Path -LiteralPath $resultsDir).Path
+$resultsUri = [System.Uri]::new($resultsDirNormalized)
+Write-Output ""
+Write-Output "Results directory: $resultsDirNormalized"
+Write-Output "Results link: $($resultsUri.AbsoluteUri)"

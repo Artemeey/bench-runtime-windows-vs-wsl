@@ -48,9 +48,11 @@ Typical mixed-scenario examples:
 
 ## Run tests
 
-Test results are written to `results/results.csv` and `results/results.txt`.
+Test results are written to `${TESTS_FS_WINDOWS}/results/results.csv` and `${TESTS_FS_WINDOWS}/results/results.txt`.
 
 Files are not cleared automatically, so you can run tests multiple times and accumulate statistics for further analysis.
+
+After `run.ps1`/`run.sh` completes, scripts print the results directory path.
 
 Full test cycle:
 
