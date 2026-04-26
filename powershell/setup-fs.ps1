@@ -2,12 +2,7 @@
 
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $packageJson = Join-Path $projectRoot "package.json"
-
-# Проверяем, что в корне бенчмарка есть package.json для npm-теста.
-if (-not (Test-Path -LiteralPath $packageJson -PathType Leaf)) {
-	Write-Error "package.json not found: $packageJson"
-	exit 1
-}
+$packageLockJson = Join-Path $projectRoot "package-lock.json"
 
 foreach ($proxy in @($false, $true)) {
 	# Разворачиваем структуру теста в нативной и прокси файловых системах.
@@ -17,6 +12,7 @@ foreach ($proxy in @($false, $true)) {
 	# Кладём одинаковый package.json в обе директории, чтобы условия npm-теста совпадали.
 	New-Item -ItemType Directory -Force -Path $npmDir | Out-Null
 	Copy-Item -LiteralPath $packageJson -Destination (Join-Path $npmDir "package.json") -Force
+	Copy-Item -LiteralPath $packageLockJson -Destination (Join-Path $npmDir "package-lock.json") -Force
 
 	Write-Output ("prepared: {0}" -f $root)
 }

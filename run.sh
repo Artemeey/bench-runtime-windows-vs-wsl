@@ -5,7 +5,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+PROJECT_ROOT="$SCRIPT_DIR"
+BASH_TESTS_DIR="$SCRIPT_DIR/bash"
 RESULTS_DIR="$PROJECT_ROOT/results"
 mkdir -p "$RESULTS_DIR"
 CSV="$RESULTS_DIR/results.csv"
@@ -54,18 +55,18 @@ run_test() {
 }
 
 # Подготавливаем тестовые директории перед запуском всех бенчмарков.
-"$SCRIPT_DIR/setup-fs.sh"
+"$BASH_TESTS_DIR/setup-fs.sh"
 
 # Запускаем тест рекурсивного обхода файлов.
-run_test "files-find" "native" "none" "$SCRIPT_DIR/files-find.sh" -- false
-run_test "files-find" "proxy" "none" "$SCRIPT_DIR/files-find.sh" -- true
+run_test "files-find" "native" "none" "$BASH_TESTS_DIR/files-find.sh" -- false
+run_test "files-find" "proxy" "none" "$BASH_TESTS_DIR/files-find.sh" -- true
 
 # Запускаем тест массового создания и удаления файлов.
-run_test "files-create-delete" "native" "none" "$SCRIPT_DIR/files-create-delete.sh" -- false
-run_test "files-create-delete" "proxy" "none" "$SCRIPT_DIR/files-create-delete.sh" -- true
+run_test "files-create-delete" "native" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- false
+run_test "files-create-delete" "proxy" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- true
 
 # Запускаем тест npm-install с прогретым и пустым кешем.
-run_test "npm-install" "native" "true" "$SCRIPT_DIR/npm-install.sh" -- false true
-run_test "npm-install" "native" "false" "$SCRIPT_DIR/npm-install.sh" -- false false
-run_test "npm-install" "proxy" "true" "$SCRIPT_DIR/npm-install.sh" -- true true
-run_test "npm-install" "proxy" "false" "$SCRIPT_DIR/npm-install.sh" -- true false
+run_test "npm-install" "native" "true" "$BASH_TESTS_DIR/npm-install.sh" -- false true
+run_test "npm-install" "native" "false" "$BASH_TESTS_DIR/npm-install.sh" -- false false
+run_test "npm-install" "proxy" "true" "$BASH_TESTS_DIR/npm-install.sh" -- true true
+run_test "npm-install" "proxy" "false" "$BASH_TESTS_DIR/npm-install.sh" -- true false

@@ -1,4 +1,4 @@
-# Выполняем бенчмарк `npm install` в двух сценариях: с кешем и без кеша.
+# Выполняем бенчмарк установки npm-зависимостей с кешем и без кеша.
 
 param (
 	[Parameter(Mandatory = $true)]
@@ -28,7 +28,7 @@ $sysCpuStart = $process.PrivilegedProcessorTime
 # Запускаем измерение wall-clock времени.
 $timer = [System.Diagnostics.Stopwatch]::StartNew()
 
-npm install --prefix $npmDir | Out-Null
+npm ci --prefix $npmDir | Out-Null
 
 # Останавливаем таймер и обновляем процесс для финальных метрик CPU.
 $timer.Stop()

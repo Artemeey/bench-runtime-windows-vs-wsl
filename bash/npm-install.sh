@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Выполняем бенчмарк `npm install` в двух сценариях: с кешем и без кеша.
+# Выполняем бенчмарк установки npm-зависимостей с кешем и без кеша.
 
 set -euo pipefail
 
@@ -25,7 +25,7 @@ if [ "$USE_CACHE" = "false" ]; then
 fi
 
 TIMEFORMAT="%3R %3U %3S"
-TIME_RESULT="$({ time npm install --prefix "$NPM_DIR" > /dev/null 2>/dev/null; } 2>&1)"
+TIME_RESULT="$({ time npm ci --prefix "$NPM_DIR" > /dev/null 2>/dev/null; } 2>&1)"
 
 read -r REAL_TIME USER_CPU SYS_CPU <<< "$TIME_RESULT"
 

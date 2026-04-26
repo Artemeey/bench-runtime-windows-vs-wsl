@@ -6,15 +6,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-PACKAGE_JSON="$PROJECT_ROOT/package.json"
 
 source "$SCRIPT_DIR/fs-path.sh"
-
-# Проверяем, что в корне бенчмарка есть package.json для npm-теста.
-if [ ! -f "$PACKAGE_JSON" ]; then
-	echo "package.json not found: $PACKAGE_JSON" >&2
-	exit 1
-fi
 
 for proxy in false true; do
 	# Разворачиваем структуру теста в нативной и прокси файловых системах.
@@ -23,7 +16,8 @@ for proxy in false true; do
 
 	# Кладём одинаковый package.json в обе директории, чтобы условия npm-теста совпадали.
 	mkdir -p "$npm_dir"
-	cp "$PACKAGE_JSON" "$npm_dir/package.json"
+	cp "$PROJECT_ROOT/package.json" "$npm_dir/package.json"
+	cp "$PROJECT_ROOT/package-lock.json" "$npm_dir/package-lock.json"
 
 	echo "prepared: $root"
 done
