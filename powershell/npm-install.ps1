@@ -24,13 +24,13 @@ Remove-Item -LiteralPath (Join-Path $npmDir "node_modules") -Recurse -Force -Err
 
 # Для сценария без кеша запускаем команду очистки npm cache перед установкой.
 if (-not $UseCache) {
-	npm cache clean --force | Out-Null
+	npm cache clean --force *> $null
 }
 
 # Запускаем npm ci из директории теста.
 Push-Location $npmDir
 try {
-	npm ci | Out-Null
+	npm ci *> $null
 } finally {
 	Pop-Location
 }
