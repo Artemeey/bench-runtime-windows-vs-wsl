@@ -131,6 +131,8 @@ run_test "npm-install" "false" "false" "$BASH_TESTS_DIR/npm-install.sh" -- false
 run_test "files-find" "false" "none" "$BASH_TESTS_DIR/files-find.sh" -- false
 run_test "files-create-delete" "false" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- false
 
+echo "";
+
 # Затем запускаем все proxy-сценарии (cross_fs=true).
 echo "🟣 Running proxy mode (cross_fs=true)"
 run_test "npm-install" "true" "true" "$BASH_TESTS_DIR/npm-install.sh" -- true true

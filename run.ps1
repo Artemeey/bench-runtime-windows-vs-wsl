@@ -91,6 +91,8 @@ Run-Test "npm-install" "false" "false" { & "$powershellTestsDir\npm-install.ps1"
 Run-Test "files-find" "false" "none" { & "$powershellTestsDir\files-find.ps1" $false } "proxy=false"
 Run-Test "files-create-delete" "false" "none" { & "$powershellTestsDir\files-create-delete.ps1" $false } "proxy=false"
 
+Write-Output ""
+
 # Затем запускаем все proxy-сценарии (cross_fs=true).
 Write-Output "$emojiModeProxy Running proxy mode (cross_fs=true)"
 Run-Test "npm-install" "true" "true" { & "$powershellTestsDir\npm-install.ps1" $true $true } "proxy=true,use_cache=true"

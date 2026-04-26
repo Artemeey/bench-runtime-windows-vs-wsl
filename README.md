@@ -24,7 +24,7 @@ Typical mixed-scenario examples:
 
 - `npm-install` — install npm dependencies from `package-lock.json` with and without cache
 - `files-find` — recursive file traversal, must run after `npm-install`
-- `files-create-delete` — create and delete 10,000 small files
+- `files-create-delete` — create and delete 1000 small files
 
 ## Test correctness
 
@@ -53,12 +53,18 @@ Test results are written to `${TESTS_FS_WINDOWS}/results/results.csv` and `${TES
 Files are not cleared automatically, so you can run tests multiple times and accumulate statistics for further analysis.
 
 After `run.ps1`/`run.sh` completes, scripts print the results directory path.
+Do not open the results file before the full test run is finished, as applications can lock it for writing.
 
 Full test cycle:
 
 - Windows: `powershell .\run.ps1`, runs tests on Windows filesystem, then on WSL
 - Windows: `bash ./run.sh`, runs tests on Windows filesystem, then on WSL
 - WSL: `./run.sh`, runs tests on WSL filesystem, then on Windows
+
+Run tests multiple times:
+
+- Bash/WSL/Git Bash: `./runMulti.sh 10`
+- PowerShell: `.\runMulti.ps1 -Count 10`
 
 PowerShell:
 
