@@ -14,18 +14,38 @@ Run recommendations:
 
 - run it in a large project on the `C:/` drive with more than 1000 files
 - run it from the project root: `curl -fsSL https://raw.githubusercontent.com/Artemeey/bench-runtime-windows-vs-wsl/refs/heads/main/simple.sh -o simple.sh && chmod +x simple.sh && ./simple.sh`
-- run it inside Docker that uses the same project directory: `docker exec -it <container_name_or_id> bash -lc 'curl -fsSL https://raw.githubusercontent.com/Artemeey/bench-runtime-windows-vs-wsl/refs/heads/main/simple.sh -o simple.sh && chmod +x simple.sh && ./simple.sh'`
+- run the same command from Docker that points to the same directory; command to enter the required Docker container: `docker exec -it <container_name_or_id> bash`
 
 See the more advanced tests with real-world scenario simulations below.
 
+## Test results
+
+Main conclusion: processes that continuously and intensively work with project files should run as close as possible to
+the filesystem where the project is located.
+
+Running the test directly on Windows shows good performance. WSL also demonstrates high performance when the project is
+located inside the WSL filesystem and is processed from WSL.
+
+At the same time, WSL results depend on how warm the filesystem cache is. In the test, the first WSL run was about `10x`
+slower than the repeated run.
+
+The strongest degradation occurs when a Docker process works with the project through a mounted Windows directory, for
+example from the `C:/` drive. In this mode, operations over a large number of files slow down especially noticeably.
+
 ## Why should you not run a Docker process that works with many files on Windows `C:/` outside WSL?
 
-You can and should use Docker on Windows, but you must make sure that the process and the files it works with are located in the same filesystem.
+You can and should use Docker on Windows, but you must make sure that the process and the files it works with are
+located in the same filesystem.
 
-It is important to understand that this is not a bug and not a WSL configuration issue. In most cases, the root cause is
-an incorrect filesystem workflow model. This is especially common with Docker on Windows: mounting volumes from the
-Windows filesystem (`C:\` → `/mnt/c`) causes a sharp performance drop. This behavior is often misinterpreted as IDE
-freezes or environment instability, while in reality it is an architectural limitation.
+**Why does this happen?**
+
+It is important to understand that Docker uses WSL. This is not a bug and not a configuration issue.
+
+In most cases, the reason is an incorrect filesystem usage model. This is especially common when using Docker on
+Windows: mounting a volume from the Windows filesystem (`C:\` → `/mnt/c`) can cause a sharp performance drop.
+
+This behavior is often mistakenly interpreted as an IDE freeze or an unstable development environment, while in reality
+it is an architectural limitation.
 
 Typical mixed-scenario examples:
 
