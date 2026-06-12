@@ -1,155 +1,80 @@
 #!/usr/bin/env bash
-
-# Запускаем все бенчмарки проекта и сохраняем результаты в CSV.
-
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$SCRIPT_DIR"
-BASH_TESTS_DIR="$SCRIPT_DIR/bash"
-source "$BASH_TESTS_DIR/.utils.sh"
+DIR="${1:-.}"
+EXT="${2:-*}"
+LIST="/tmp/fs-test-files.$$"
+RESULTS="/tmp/fs-test-results.$$"
 
-# Приводим вывод отдельного теста к формату CSV-полей.
-parse_result() {
-	local output="$1"
+trap 'rm -f "$LIST" "$RESULTS"' EXIT
 
-	local files time user sys
-
-	files="$(echo "$output" | grep '^files:' | sed 's/files: //')"
-	time="$(echo "$output" | grep '^time:' | sed 's/time: //' | sed 's/ sec//')"
-	user="$(echo "$output" | grep '^cpu_user:' | sed 's/cpu_user: //' | sed 's/ sec//')"
-	sys="$(echo "$output" | grep '^cpu_sys:' | sed 's/cpu_sys: //' | sed 's/ sec//')"
-
-	echo "$files,$time,$user,$sys"
+now_ms() {
+	date +%s%3N
 }
 
-# Выполняем один тест и пишем строку результата с метаданными сценария.
-run_test() {
+format_ms() {
+	awk -v ms="$1" 'BEGIN { printf "%.3f", ms / 1000 }'
+}
+
+measure() {
 	local name="$1"
-	local cross_fs="$2"
-	local cache="$3"
-	local script="$4"
-	local separator="${5:-}"
+	local start
+	local end
+	local elapsed
 
-	if [ "$separator" != "--" ]; then
-		echo "Usage: run_test <name> <cross_fs> <cache> <script> -- [args...]" >&2
-		exit 1
-	fi
+	shift
 
-	# Печатаем короткий заголовок сценария, чтобы тесты не сливались в логе.
-	echo
-	echo "🧪 $name | cross_fs=$cross_fs | cache=$cache | args=${*:6}"
+	start="$(now_ms)"
+	"$@"
+	end="$(now_ms)"
 
-	# Вызываем скрипт теста отдельно от служебных параметров run_test:
-	# первые 4 аргумента — метаданные строки CSV, 5-й — разделитель `--`,
-	# аргументы с 6-го — параметры теста.
-	local output
-	output="$("$script" "${@:6}")"
+	elapsed="$((end - start))"
 
-	echo "$output"
-
-	local parsed
-	parsed="$(parse_result "$output")"
-
-	echo "bash,$name,$cross_fs,$cache,$parsed" >> "$RESULTS_CSV_PATH"
+	printf '%s\t%s\n' "$name" "$(format_ms "$elapsed")" >> "$RESULTS"
 }
 
-# Подготавливаем тестовые директории перед запуском всех бенчмарков.
-load_project_env
+printf 'Filesystem test\n'
+printf 'DIR: %s\n' "$DIR"
+printf 'EXT: .%s\n\n' "$EXT"
 
-# Формируем директорию результатов внутри TESTS_FS_WINDOWS, чтобы все прогоны писались в одно место.
-RESULTS_DIR_WINDOWS="${TESTS_FS_WINDOWS%/}/results"
+measure "find files" \
+	bash -c '
+		find "$1" \
+			-path "$1/vendor" -prune -o \
+			-path "$1/node_modules" -prune -o \
+			-path "$1/.git" -prune -o \
+			-type f \
+			-name "*.$2" \
+			-print0 > "$3"
+	' _ "$DIR" "$EXT" "$LIST"
 
-if [ "${MSYSTEM:-}" != "" ]; then
-	RESULTS_DIR_PATH="$(windows_path_to_git_bash_path "$RESULTS_DIR_WINDOWS")"
-else
-	RESULTS_DIR_PATH="$(windows_path_to_wsl_path "$RESULTS_DIR_WINDOWS")"
-fi
+FILES_COUNT="$(tr -cd '\0' < "$LIST" | wc -c | tr -d ' ')"
 
-mkdir -p "$RESULTS_DIR_PATH"
-RESULTS_CSV_PATH="$RESULTS_DIR_PATH/results.csv"
-RESULTS_TXT_PATH="$RESULTS_DIR_PATH/results.txt"
+measure "count files" \
+	bash -c '
+		tr -cd "\0" < "$1" | wc -c >/dev/null
+	' _ "$LIST"
 
-if [ ! -f "$RESULTS_CSV_PATH" ]; then
-	echo "runtime,test,cross_fs,cache,files,time,cpu_user,cpu_sys" > "$RESULTS_CSV_PATH"
-fi
+measure "read sizes" \
+	bash -c '
+		xargs -0 stat -c "%s" < "$1" >/dev/null
+	' _ "$LIST"
 
-# Сохраняем версии инструментов и параметры запуска в текстовый отчёт.
-wsl_version_raw="$(wsl --version 2>/dev/null | tr -d '\000' | sed -E 's/[^[:print:]]//g' | head -n 1 || true)"
-wsl_version="$(echo "$wsl_version_raw" | grep -Eo '[0-9]+(\.[0-9]+)+' | head -n 1 || true)"
-windows_os="$(uname -sr 2>/dev/null | sed -E 's/^.*(NT-[0-9.]+).*$/Windows \1/' || true)"
-unix_os="$(uname -srmo 2>/dev/null || true)"
+measure "md5" \
+	bash -c '
+		xargs -0 md5sum < "$1" >/dev/null
+	' _ "$LIST"
 
-# Определяем тип файловой системы по локальному пути.
-get_fs_type_local() {
-	local path="$1"
-	df -T "$path" 2>/dev/null | awk 'NR==2 {print $2}'
-}
+printf '%-16s %10s\n' "TEST" "SECONDS"
+printf '%-16s %10s\n' "----------------" "----------"
 
-# Определяем тип файловой системы по пути внутри WSL.
-get_fs_type_wsl() {
-	local path="$1"
-	wsl -d "$WSL_DISTRO" bash -lc "df -T '$path' 2>/dev/null | sed -n '2p' | tr -s ' ' | cut -d' ' -f2" 2>/dev/null
-}
+while IFS=$'\t' read -r name seconds; do
+	printf '%-16s %10s\n' "$name" "$seconds"
+done < "$RESULTS"
 
-windows_path_for_bash="$(windows_path_to_git_bash_path "$TESTS_FS_WINDOWS")"
-windows_path_for_wsl="$(windows_path_to_wsl_path "$TESTS_FS_WINDOWS")"
-wsl_path_for_wsl="$TESTS_FS_WSL"
+TOTAL="$(
+	awk -F '\t' '{ sum += $2 } END { printf "%.3f", sum }' "$RESULTS"
+)"
 
-if [ "${MSYSTEM:-}" != "" ]; then
-	fs_windows="$(get_fs_type_local "$windows_path_for_bash")"
-	fs_wsl="$(get_fs_type_wsl "$wsl_path_for_wsl")"
-else
-	fs_windows="$(get_fs_type_local "$windows_path_for_wsl")"
-	fs_wsl="$(get_fs_type_local "$wsl_path_for_wsl")"
-fi
-
-report_block="$({
-	[ -s "$RESULTS_TXT_PATH" ] && echo
-	echo "🟦 runtime: bash"
-	echo "os_unix: $unix_os"
-	echo "os_windows: $windows_os"
-	echo "wsl: $wsl_version (${WSL_DISTRO:-})"
-	echo "fs_windows: ${TESTS_FS_WINDOWS} -> ${fs_windows:-unknown}"
-	echo "fs_wsl: ${TESTS_FS_WSL} -> ${fs_wsl:-unknown}"
-	echo "bash: ${BASH_VERSION:-unknown}"
-	echo "node: $(node -v 2>/dev/null || true)"
-	echo "npm: $(npm -v 2>/dev/null || true)"
-})"
-
-echo "$report_block" | tee -a "$RESULTS_TXT_PATH"
-
-echo "";
-"$BASH_TESTS_DIR/setup-fs.sh"
-
-echo "";
-
-# Сначала запускаем все native-сценарии (cross_fs=false).
-echo "🟢 Running native mode (cross_fs=false)"
-run_test "npm-install" "false" "true" "$BASH_TESTS_DIR/npm-install.sh" -- false true
-run_test "npm-install" "false" "false" "$BASH_TESTS_DIR/npm-install.sh" -- false false
-run_test "files-find" "false" "none" "$BASH_TESTS_DIR/files-find.sh" -- false
-run_test "files-create-delete" "false" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- false
-
-echo "";
-
-# Затем запускаем все proxy-сценарии (cross_fs=true).
-echo "🟣 Running proxy mode (cross_fs=true)"
-run_test "npm-install" "true" "true" "$BASH_TESTS_DIR/npm-install.sh" -- true true
-run_test "npm-install" "true" "false" "$BASH_TESTS_DIR/npm-install.sh" -- true false
-run_test "files-find" "true" "none" "$BASH_TESTS_DIR/files-find.sh" -- true
-run_test "files-create-delete" "true" "none" "$BASH_TESTS_DIR/files-create-delete.sh" -- true
-
-# Подготавливаем команду открытия папки результатов в Проводнике.
-if [ "${MSYSTEM:-}" != "" ]; then
-	RESULTS_DIR_FOR_EXPLORER="${RESULTS_DIR_WINDOWS//\//\\}"
-else
-	RESULTS_DIR_FOR_EXPLORER="$(wslpath -w "$RESULTS_DIR_PATH")"
-fi
-
-RESULTS_URI_PATH="${RESULTS_DIR_FOR_EXPLORER//\\//}"
-RESULTS_LINK="file:///$RESULTS_URI_PATH"
-
-echo
-echo "📁 Results directory: $RESULTS_DIR_PATH"
-echo "🔗 Results link: $RESULTS_LINK"
+printf '\n%-16s %10s\n' "files" "$FILES_COUNT"
+printf '%-16s %10s\n' "total" "$TOTAL"
