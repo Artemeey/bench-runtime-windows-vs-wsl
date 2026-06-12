@@ -23,11 +23,11 @@ See the more advanced tests with real-world scenario simulations below.
 Main conclusion: processes that continuously and intensively work with project files should run as close as possible to
 the filesystem where the project is located.
 
-If the project is located on `C:/`, such processes are better run directly on Windows. Running them from Docker through
-a mounted Windows directory can cause severe performance degradation.
+Running the test directly on Windows shows good performance. WSL also demonstrates high performance when the project is
+located inside the WSL filesystem and is processed from WSL.
 
-WSL can speed up repeated operations after the filesystem cache has warmed up, but after every WSL start or restart, the
-first pass over the files can become slow again.
+The strongest degradation occurs when a Docker process works with the project through a mounted Windows directory, for
+example from the `C:/` drive. In this mode, operations over a large number of files slow down especially noticeably.
 
 ## Why should you not run a Docker process that works with many files on Windows `C:/` outside WSL?
 
