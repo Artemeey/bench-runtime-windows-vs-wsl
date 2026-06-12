@@ -26,6 +26,9 @@ the filesystem where the project is located.
 Running the test directly on Windows shows good performance. WSL also demonstrates high performance when the project is
 located inside the WSL filesystem and is processed from WSL.
 
+At the same time, WSL results depend on how warm the filesystem cache is. In the test, the first WSL run was about `10x`
+slower than the repeated run.
+
 The strongest degradation occurs when a Docker process works with the project through a mounted Windows directory, for
 example from the `C:/` drive. In this mode, operations over a large number of files slow down especially noticeably.
 
