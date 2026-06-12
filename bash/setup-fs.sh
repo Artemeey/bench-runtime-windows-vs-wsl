@@ -13,7 +13,7 @@ load_project_env
 for proxy in false true; do
 	# Разворачиваем структуру теста в нативной и прокси файловых системах.
 	root="$(get_root_path "$proxy")"
-	confirm_directory_exists "$root"
+
 	npm_dir="$root/npm-install"
 	mode_name="native"
 	if [ "$proxy" = "true" ]; then
