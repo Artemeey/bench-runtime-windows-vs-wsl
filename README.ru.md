@@ -16,7 +16,7 @@
 
 - запускать в большом проекте на диске `c:/` (больше 1000 файлов)
 - запустить в корне проекта: `curl -fsSL https://raw.githubusercontent.com/Artemeey/bench-runtime-windows-vs-wsl/refs/heads/main/simple.sh -o simple.sh && chmod +x simple.sh && ./simple.sh`
-- запустить внутри в docker (который использует ту же папку с проектом): `docker exec -it <container_name_or_id> bash -lc 'curl -fsSL https://raw.githubusercontent.com/Artemeey/bench-runtime-windows-vs-wsl/refs/heads/main/simple.sh -o simple.sh && chmod +x simple.sh && ./simple.sh'`
+- запустить ту же команду, но из Docker, который смотрит в ту же папку, команда для входа в нужный контейнер Docker: `docker exec -it <container_name_or_id> bash'`
 
 Более сложные тесты с имитацией реальных кейсов см. ниже.
 
