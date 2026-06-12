@@ -13,8 +13,8 @@ Test file: [simple.sh](simple.sh).
 Run recommendations:
 
 - run it in a large project on the `C:/` drive with more than 1000 files
-- run it from the project root: `curl -fsSL https://raw.githubusercontent.com/Artemeey/bench-runtime-windows-vs-wsl/main/simple.sh -o simple.sh && chmod +x simple.sh && ./simple.sh`
-- run it inside Docker that uses the same project directory: `docker exec -it <container_name_or_id> bash -lc 'curl -fsSL https://raw.githubusercontent.com/Artemeey/bench-runtime-windows-vs-wsl/main/simple.sh -o simple.sh && chmod +x simple.sh && ./simple.sh'`
+- run it from the project root: `curl -fsSL https://raw.githubusercontent.com/Artemeey/bench-runtime-windows-vs-wsl/refs/heads/main/simple.sh -o simple.sh && chmod +x simple.sh && ./simple.sh`
+- run it inside Docker that uses the same project directory: `docker exec -it <container_name_or_id> bash -lc 'curl -fsSL https://raw.githubusercontent.com/Artemeey/bench-runtime-windows-vs-wsl/refs/heads/main/simple.sh -o simple.sh && chmod +x simple.sh && ./simple.sh'`
 
 See the more advanced tests with real-world scenario simulations below.
 
