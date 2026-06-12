@@ -1,10 +1,26 @@
 # bench-runtime-windows-vs-wsl
 
-Benchmark suite for comparing Windows and WSL performance.
+A set of benchmarks for comparing Windows and WSL performance.
 
-These tests show how strongly file location affects performance when working with WSL. Even in simple scenarios, you can
-hit performance degradation by tens or hundreds of times. This directly affects task execution speed, development tool
-responsiveness, and SSD load.
+The tests show how strongly file location affects performance when working with WSL. Even in basic scenarios, performance can degrade by tens or hundreds of times. This directly affects task execution speed, development tool responsiveness, and increases SSD load.
+
+## Quick simple test
+
+This simple test quickly shows filesystem performance.
+
+Test file: [simple.sh](simple.sh).
+
+Run recommendations:
+
+- run it in a large project on the `C:/` drive with more than 1000 files
+- run it from the project root: `curl -fsSL https://raw.githubusercontent.com/Artemeey/bench-runtime-windows-vs-wsl/HEAD/simple.sh -o simple.sh && chmod +x simple.sh && ./simple.sh`
+- run it inside Docker that uses the same project directory: `docker exec -it <container_name_or_id> bash -lc 'curl -fsSL https://raw.githubusercontent.com/Artemeey/bench-runtime-windows-vs-wsl/HEAD/simple.sh -o simple.sh && chmod +x simple.sh && ./simple.sh'`
+
+See the more advanced tests with real-world scenario simulations below.
+
+## Why should you not run a Docker process that works with many files on Windows `C:/` outside WSL?
+
+You can and should use Docker on Windows, but you must make sure that the process and the files it works with are located in the same filesystem.
 
 It is important to understand that this is not a bug and not a WSL configuration issue. In most cases, the root cause is
 an incorrect filesystem workflow model. This is especially common with Docker on Windows: mounting volumes from the
